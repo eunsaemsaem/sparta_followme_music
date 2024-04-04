@@ -148,34 +148,35 @@ const signin_form = document.getElementById("signin_form");
 
 const signin_form_btn = document.getElementById("signin_form_btn");
 
+const signup_link = document.getElementsByClassName("signup-link")[0];
+const signin_link = document.getElementsByClassName("login-link")[0];
+
 // 모달 바깥쪽 영역 클릭 이벤트
-modal_bg.addEventListener("click", () => {
-    console.log("모달 바깥쪽 영역 클릭");
-    // modal_bg.classList.remove("on");
-    // signup_form.classList.remove("on");
-    // signin_form.classList.remove("on");
+modal_bg.addEventListener("click", e => {
+    // 바깥쪽 모달이 아니면 닫지 않는다.
+    if (e.target !== modal_bg) return;
+    modal_bg.classList.remove("on");
+    signup_form.classList.remove("on");
+    signin_form.classList.remove("on");
 })
 
 // 회원가입 버튼 이벤트
 signup_btn.addEventListener("click", () => {
     console.log("회원가입 버튼 이벤트 클릭");
     modal_bg.classList.add("on");
-    signup_form.classList.add("on");
-    signin_form.classList.remove("on");
+    signup_btn_click();
 })
 
 // 로그인 폼 활성 버튼 클릭 이벤트
 signin_btn.addEventListener("click", () => {
     console.log("로그인 버튼 이벤트 클릭");
     modal_bg.classList.add("on");
-    signin_form.classList.add("on");
-    signup_form.classList.remove("on");
+    signin_btn_click();
 })
 
 // 로그인 버튼 클릭 이벤트
 signin_form_btn.addEventListener("click", (e) => {
     e.preventDefault();
-
     const signin_id = document.getElementById("signin_id").value;
     const signin_pw = document.getElementById("signin_pw").value;
 
@@ -191,5 +192,22 @@ signin_form_btn.addEventListener("click", (e) => {
         const errorMessage = error.message;
     });
 })
+
+// 로그인 폼의 회원가입 링크 클릭 이벤트
+signup_link.addEventListener("click", e => {
+    e.preventDefault();
+    signup_btn_click();
+})
+
+// 폼을 띄우기 위한 함수
+function signin_btn_click(){
+    signin_form.classList.add("on");
+    signup_form.classList.remove("on");
+}
+
+function signup_btn_click(){
+    signup_form.classList.add("on");
+    signin_form.classList.remove("on");
+}
 
 // TODO 브라우저 쿠키에 로그인 정보 저장 기능 구현
