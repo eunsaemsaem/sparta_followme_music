@@ -12,12 +12,35 @@
     <script>
         function searching() {
             var searchStr = document.getElementById('search').value;
-            videoId = searchStr.split("v=")[1].split("&")[0];
+            const videoId = searchStr.split("v=")[1].split("&")[0];
             const embedUrl = `https://www.youtube.com/embed/${videoId}`;
 
             var iframe = document.getElementById('videoIframe');
             iframe.src = embedUrl;
         }
+        fetch("https://raw.githubusercontent.com/KoreanThinker/billboard-json/main/billboard-hot-100/recent.json").then(res => res.json()).then(data => {
+            let rows = data['data']
+            rows.forEach((a, index) => {
+                if (index < 5) {
+                    console.log(a)
+
+                    let title = a['name']
+                    let name = a['artist']
+                    let image = a['image']
+
+
+                    let temp_html = `<div class="card">
+            <img src="${image}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">${title}</h5>
+                <p class="card-text">${name}</p>
+            </div>
+        </div>`;
+                    $('#rank-card').append(temp_html)
+                }
+
+            })
+        })
     </script>
 
     <!-- jquery 로드 부분입니다. -->
@@ -65,42 +88,7 @@
     <!-- 검색 끝 -->
     음악 랭킹
     <!-- 음악 랭킹 시작 -->
-    <div class="card-group">
-        <div class="card">
-            <img src="./images/sample.png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">노래명</h5>
-                <p class="card-text">가수명</p>
-            </div>
-        </div>
-        <div class="card">
-            <img src="./images/sample.png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">노래명</h5>
-                <p class="card-text">가수명</p>
-            </div>
-        </div>
-        <div class="card">
-            <img src="./images/sample.png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">노래명</h5>
-                <p class="card-text">가수명</p>
-            </div>
-        </div>
-        <div class="card">
-            <img src="./images/sample.png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">노래명</h5>
-                <p class="card-text">가수명</p>
-            </div>
-        </div>
-        <div class="card">
-            <img src="./images/sample.png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">노래명</h5>
-                <p class="card-text">가수명</p>
-            </div>
-        </div>
+    <div class="card-group" id="rank-card">
     </div>
 
     <!-- 음악 랭킹 끝 -->
