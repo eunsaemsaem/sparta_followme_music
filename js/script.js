@@ -5,13 +5,20 @@ import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-fir
 
 // firebase config
 const firebaseConfig = {
-    apiKey: "AIzaSyCdAbo_ViOKm3gYiMKDm1a4PLzvQXjK6IQ",
-    authDomain: "team-followme-miniproject.firebaseapp.com",
-    projectId: "team-followme-miniproject",
-    storageBucket: "team-followme-miniproject.appspot.com",
-    messagingSenderId: "475357059255",
-    appId: "1:475357059255:web:59ae12e37a4ee731b85532",
-    measurementId: "G-KHREYSMK6P"
+    // apiKey: "AIzaSyCdAbo_ViOKm3gYiMKDm1a4PLzvQXjK6IQ",
+    // authDomain: "team-followme-miniproject.firebaseapp.com",
+    // projectId: "team-followme-miniproject",
+    // storageBucket: "team-followme-miniproject.appspot.com",
+    // messagingSenderId: "475357059255",
+    // appId: "1:475357059255:web:59ae12e37a4ee731b85532",
+    // measurementId: "G-KHREYSMK6P"
+    apiKey: "AIzaSyDPruA75ST7ed8r9CuKdHmZ78gj4EHeyW0",
+    authDomain: "pre-web-pj.firebaseapp.com",
+    projectId: "pre-web-pj",
+    storageBucket: "pre-web-pj.appspot.com",
+    messagingSenderId: "267102387398",
+    appId: "1:267102387398:web:59e28215e6924f39d92bc7",
+    measurementId: "G-HTEEHCCV1P"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -136,3 +143,80 @@ function valueToStar(value) {
     }
     return star;
 }
+
+// 로그인
+const modal_bg = document.getElementById("modal_bg");
+const signup_btn = document.getElementById("signup_btn");
+const signin_btn = document.getElementById("signin_btn");
+
+const signup_form = document.getElementById("signup_form");
+const signin_form = document.getElementById("signin_form");
+
+// 모달 바깥쪽 영역 클릭 이벤트
+modal_bg.addEventListener("click", () => {
+    console.log("모달 바깥쪽 영역 클릭");
+    // modal_bg.classList.remove("on");
+    // signup_form.classList.remove("on");
+    // signin_form.classList.remove("on");
+})
+
+// 회원가입 버튼 이벤트
+signup_btn.addEventListener("click", () => {
+    console.log("회원가입 버튼 이벤트 클릭");
+    modal_bg.classList.add("on");
+    signup_form.classList.add("on");
+    signin_form.classList.remove("on");
+})
+
+
+// 로그인 버튼 이벤트
+signin_btn.addEventListener("click", () => {
+    console.log("로그인 버튼 이벤트 클릭");
+    modal_bg.classList.add("on");
+    signin_form.classList.add("on");
+    signup_form.classList.remove("on");
+})
+
+// 로그인 form
+const signin_id = document.getElementById("signin_id").value;
+const signin_pw = document.getElementById("signin_pw").value;
+
+let signin_data = {
+    id: signin_id,
+    pw: signin_pw
+}
+
+docs = await getDocs(collection(db, "member"));
+
+// const forms = document.querySelector(".forms"),
+//     pwShowHide = document.querySelectorAll(".eye-icon"),
+//     links = document.querySelectorAll(".link");
+
+// pwShowHide.forEach(eyeIcon => {
+//     eyeIcon.addEventListener("click", () => {
+//         let pwFields = eyeIcon.parentElement.parentElement.querySelectorAll(".password");
+
+//         pwFields.forEach(password => {
+//             if (password.type === "password") {
+//                 password.type = "text";
+//                 eyeIcon.classList.replace("bx-hide", "bx-show");
+//                 return;
+//             }
+//             password.type = "password";
+//             eyeIcon.classList.replace("bx-show", "bx-hide");
+//         })
+
+//     })
+// })
+
+// links.forEach(link => {
+//     link.addEventListener("click", e => {
+//         e.preventDefault(); //preventing form submit
+//         forms.classList.toggle("show-signup");
+//     })
+// })
+
+// function check() {
+//     var els = document.getElementsByClassName("input1");
+//     alert(els);
+// }

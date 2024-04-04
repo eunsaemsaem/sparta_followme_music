@@ -14,95 +14,166 @@
     <script type="module" src="./js/script.js"></script>
 </head>
 <link rel="stylesheet" href="./css/style.css" />
+<link rel="stylesheet" href="./css/login.css" />
 
 <body>
-    <!-- 검색 시작 -->
-    <div class="input-group mb-3">
-        <!-- 검색 -->
-        <input id="search" type="text" class="form-control" placeholder="Youtube Link 입력" aria-label="Youtube Link 입력"
-            aria-describedby="button-addon2">
-        <button id="searchBtn" class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
-    </div>
-    <!-- 검색 끝 -->
-    음악 랭킹
-    <!-- 음악 랭킹 시작 -->
-    <div class="card-group" id="rank-card">
+    <div>
+        <nav style="--bs-breadcrumb-divider: '';float:right;" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <ol class="breadcrumb">
+                    <li id="signin_btn" class="btn btn-outline-primary">sign in</a></li>
+                    <li id="signup_btn" class="btn btn-outline-dark" style="margin-left: 6px;" aria-current="page">sign
+                        up
+                    </li>
+                </ol>
+            </ol>
+
+        </nav>
+        <!-- 검색 시작 -->
+        <div class="input-group mb-3">
+            <!-- 검색 -->
+            <input id="search" type="text" class="form-control" placeholder="Youtube Link 입력"
+                aria-label="Youtube Link 입력" aria-describedby="button-addon2">
+            <button id="searchBtn" class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
+        </div>
+        <!-- 검색 끝 -->
+        음악 랭킹
+        <!-- 음악 랭킹 시작 -->
+        <div class="card-group" id="rank-card">
+        </div>
+
+        <!-- 음악 랭킹 끝 -->
+        <!-- 동영상 정보 시작 -->
+        <div class="card mb-3 mt-3">
+            <!-- 동영상 player 작성 -->
+            <div id="video" class="card">
+                <iframe id="videoIframe" width=100% height=100% src="https://www.youtube.com/embed/RwmcrmMABG0"
+                    title="알고리즘 코딩테스트 문제풀이 강의  - 5  나머지 합 구하기 (백준 10986)" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard\index.html-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <!-- 동영상 설명 시작 -->
+            <div class="card-body w">
+                <div class="row g-3">
+                    <div class="col-sm-10">
+                        <!-- 동영상 제목 -->
+                        <h5 id="title">Card title</h5>
+                    </div>
+                    <div class="col-sm">
+                        <img src="./images/thumb_up.svg">
+                    </div>
+                    <div class="col-sm">
+                        <!-- 좋아요 -->
+                        <h5 id="video_like" class="card-title">100</h5>
+                    </div>
+                </div>
+                <h5 class="card-title views">조회수: <span id="video_views"></span>회</h5>
+                <h5 id="channelName" class="card-title views">채널 이름</h5>
+                <!-- 동영상 설명 -->
+                <p id="video_description" class="card-text">동영상 설명 부분입니다.</p>
+            </div>
+            <!-- 동영상 정보 끝 -->
+        </div>
+        <!-- 댓글 작성 시작 -->
+        <div class="card mb-3">
+            <div class="card-body w p">
+                <!-- 댓글 작성자명 -->
+                <div id="co_writer" class="card-header p">
+                    <input id="co_writer_input" type="text" class="form-control" placeholder="작성자 입력"
+                        aria-label="Youtube Link 입력" aria-describedby="button-addon2">
+                </div>
+                <!-- 별점 선택 -->
+                <div class="input-group">
+                    <label class="input-group-text" for="inputGroupSelect01">별점</label>
+                    <select class="form-select" id="co_star">
+                        <option selected>별점선택</option>
+                        <option value="1">⭐</option>
+                        <option value="2">⭐⭐</option>
+                        <option value="3">⭐⭐⭐</option>
+                        <option value="3">⭐⭐⭐⭐</option>
+                        <option value="3">⭐⭐⭐⭐⭐</option>
+                    </select>
+                </div>
+                <div class="form-floating">
+                    <!-- 댓글 입력 -->
+                    <textarea class="form-control" id="co_input" style="height: 100px"></textarea>
+                    <label for="floatingTextarea2">Comments</label>
+                </div>
+                <button id="co_btn" class="btn btn-secondary w">댓글 작성</button>
+            </div>
+        </div>
+        <!-- 댓글 작성 끝 -->
+        <!-- 댓글 조회 시작 -->
+        <div class="card mb-3">
+            <div class="card-body w p">
+                <!-- 댓글 작성자명 -->
+                <div id="co_writer" class="card-header">작성자명</div>
+                <div class="card-body">
+                    <!-- 별점 -->
+                    <p id="co_vites" class="card-text co">⭐⭐⭐⭐⭐</p>
+                    <!-- 댓글 -->
+                    <p id="co_text" class="card-text co">이곳은 댓글을 작성하는 곳 입니다.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- 음악 랭킹 끝 -->
-    <!-- 동영상 정보 시작 -->
-    <div class="card mb-3 mt-3">
-        <!-- 동영상 player 작성 -->
-        <div id="video" class="card">
-            <iframe id="videoIframe" width=100% height=100% src="https://www.youtube.com/embed/RwmcrmMABG0"
-                title="알고리즘 코딩테스트 문제풀이 강의  - 5  나머지 합 구하기 (백준 10986)" frameborder="0"
-                allow="accelerometer; autoplay; clipboard\index.html-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <!-- 동영상 설명 시작 -->
-        <div class="card-body w">
-            <div class="row g-3">
-                <div class="col-sm-10">
-                    <!-- 동영상 제목 -->
-                    <h5 id="title">Card title</h5>
+    <!-- 모달 -->
+        <section id="modal_bg" class="modal-container forms">
+            <div class="form">
+                <!-- 회원가입 -->
+                <div id="signup_form" class="form-content">
+                    <header>Signup</header>
+                    <form action="#">
+                        <div class="field input-field4">
+                            <input type="email" placeholder="Email" class="input1">
+                        </div>
+
+                        <div class="field input-field5">
+                            <input type="password" placeholder="Create password" class="password">
+                        </div>
+
+                        <div class="field input-field6">
+                            <input type="password" placeholder="Confirm password" class="password">
+                            <i class='bx bx-hide eye-icon'></i>
+                        </div>
+
+                        <div class="field button-field">
+                            <button>Signup</button>
+                        </div>
+                    </form>
+
+                    <div class="form-link">
+                        <span>Already have an account? <a href="#" class="link login-link">Login</a></span>
+                    </div>
                 </div>
-                <div class="col-sm">
-                    <img src="./images/thumb_up.svg">
+                <div id="signin_form" class="form-content">
+                    <header>Login</header>
+                    <form action="#">
+                        <div class="field input-field1">
+                            <input type="email" placeholder="Email" class="input">
+                        </div>
+
+                        <div class="field input-field2">
+                            <input type="password" placeholder="Password" class="password">
+                            <i class='bx bx-hide eye-icon'></i>
+                        </div>
+
+                        <div class="form-link">
+                            <br>
+                        </div>
+
+                        <div class="field button-field3">
+                            <button>Login</button>
+                        </div>
+                    </form>
+
+                    <div class="form-link">
+                        <span>Don't have an account? <a href="#" class="link signup-link">Signup</a></span>
+                    </div>
                 </div>
-                <div class="col-sm">
-                    <!-- 좋아요 -->
-                    <h5 id="video_like" class="card-title">100</h5>
-                </div>
             </div>
-            <h5 class="card-title views">조회수: <span id="video_views"></span>회</h5>
-            <h5 id="channelName" class="card-title views">채널 이름</h5>
-            <!-- 동영상 설명 -->
-            <p id="video_description" class="card-text">동영상 설명 부분입니다.</p>
-        </div>
-        <!-- 동영상 정보 끝 -->
-    </div>
-    <!-- 댓글 작성 시작 -->
-    <div class="card mb-3">
-        <div class="card-body w p">
-            <!-- 댓글 작성자명 -->
-            <div id="co_writer" class="card-header p">
-                <input id="co_writer_input" type="text" class="form-control" placeholder="작성자 입력"
-                    aria-label="Youtube Link 입력" aria-describedby="button-addon2">
-            </div>
-            <!-- 별점 선택 -->
-            <div class="input-group">
-                <label class="input-group-text" for="inputGroupSelect01">별점</label>
-                <select class="form-select" id="co_star">
-                    <option selected>별점선택</option>
-                    <option value="1">⭐</option>
-                    <option value="2">⭐⭐</option>
-                    <option value="3">⭐⭐⭐</option>
-                    <option value="3">⭐⭐⭐⭐</option>
-                    <option value="3">⭐⭐⭐⭐⭐</option>
-                </select>
-            </div>
-            <div class="form-floating">
-                <!-- 댓글 입력 -->
-                <textarea class="form-control" id="co_input" style="height: 100px"></textarea>
-                <label for="floatingTextarea2">Comments</label>
-            </div>
-            <button id="co_btn" class="btn btn-secondary w">댓글 작성</button>
-        </div>
-    </div>
-    <!-- 댓글 작성 끝 -->
-    <!-- 댓글 조회 시작 -->
-    <div class="card mb-3">
-        <div class="card-body w p">
-            <!-- 댓글 작성자명 -->
-            <div id="co_writer" class="card-header">작성자명</div>
-            <div class="card-body">
-                <!-- 별점 -->
-                <p id="co_vites" class="card-text co">⭐⭐⭐⭐⭐</p>
-                <!-- 댓글 -->
-                <p id="co_text" class="card-text co">이곳은 댓글을 작성하는 곳 입니다.</p>
-            </div>
-        </div>
-    </div>
+        </section>
     <!-- 부트스트랩 로드 부분입니다. -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
