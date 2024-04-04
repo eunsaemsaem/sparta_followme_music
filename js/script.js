@@ -2,23 +2,17 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/fireba
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
 // firebase config
 const firebaseConfig = {
-    // apiKey: "AIzaSyCdAbo_ViOKm3gYiMKDm1a4PLzvQXjK6IQ",
-    // authDomain: "team-followme-miniproject.firebaseapp.com",
-    // projectId: "team-followme-miniproject",
-    // storageBucket: "team-followme-miniproject.appspot.com",
-    // messagingSenderId: "475357059255",
-    // appId: "1:475357059255:web:59ae12e37a4ee731b85532",
-    // measurementId: "G-KHREYSMK6P"
-    apiKey: "AIzaSyDPruA75ST7ed8r9CuKdHmZ78gj4EHeyW0",
-    authDomain: "pre-web-pj.firebaseapp.com",
-    projectId: "pre-web-pj",
-    storageBucket: "pre-web-pj.appspot.com",
-    messagingSenderId: "267102387398",
-    appId: "1:267102387398:web:59e28215e6924f39d92bc7",
-    measurementId: "G-HTEEHCCV1P"
+    apiKey: "AIzaSyCdAbo_ViOKm3gYiMKDm1a4PLzvQXjK6IQ",
+    authDomain: "team-followme-miniproject.firebaseapp.com",
+    projectId: "team-followme-miniproject",
+    storageBucket: "team-followme-miniproject.appspot.com",
+    messagingSenderId: "475357059255",
+    appId: "1:475357059255:web:59ae12e37a4ee731b85532",
+    measurementId: "G-KHREYSMK6P"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -152,6 +146,8 @@ const signin_btn = document.getElementById("signin_btn");
 const signup_form = document.getElementById("signup_form");
 const signin_form = document.getElementById("signin_form");
 
+const signin_form_btn = document.getElementById("signin_form_btn");
+
 // 모달 바깥쪽 영역 클릭 이벤트
 modal_bg.addEventListener("click", () => {
     console.log("모달 바깥쪽 영역 클릭");
@@ -168,8 +164,7 @@ signup_btn.addEventListener("click", () => {
     signin_form.classList.remove("on");
 })
 
-
-// 로그인 버튼 이벤트
+// 로그인 폼 활성 버튼 클릭 이벤트
 signin_btn.addEventListener("click", () => {
     console.log("로그인 버튼 이벤트 클릭");
     modal_bg.classList.add("on");
@@ -177,46 +172,24 @@ signin_btn.addEventListener("click", () => {
     signup_form.classList.remove("on");
 })
 
-// 로그인 form
-const signin_id = document.getElementById("signin_id").value;
-const signin_pw = document.getElementById("signin_pw").value;
+// 로그인 버튼 클릭 이벤트
+signin_form_btn.addEventListener("click", (e) => {
+    e.preventDefault();
 
-let signin_data = {
-    id: signin_id,
-    pw: signin_pw
-}
+    const signin_id = document.getElementById("signin_id").value;
+    const signin_pw = document.getElementById("signin_pw").value;
 
-docs = await getDocs(collection(db, "member"));
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, signin_id, signin_pw)
+    .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+    })
+    .catch((error) => {
+        console.log("로그인 실패");
+        const errorCode = error.code;
+        const errorMessage = error.message;
+    });
+})
 
-// const forms = document.querySelector(".forms"),
-//     pwShowHide = document.querySelectorAll(".eye-icon"),
-//     links = document.querySelectorAll(".link");
-
-// pwShowHide.forEach(eyeIcon => {
-//     eyeIcon.addEventListener("click", () => {
-//         let pwFields = eyeIcon.parentElement.parentElement.querySelectorAll(".password");
-
-//         pwFields.forEach(password => {
-//             if (password.type === "password") {
-//                 password.type = "text";
-//                 eyeIcon.classList.replace("bx-hide", "bx-show");
-//                 return;
-//             }
-//             password.type = "password";
-//             eyeIcon.classList.replace("bx-show", "bx-hide");
-//         })
-
-//     })
-// })
-
-// links.forEach(link => {
-//     link.addEventListener("click", e => {
-//         e.preventDefault(); //preventing form submit
-//         forms.classList.toggle("show-signup");
-//     })
-// })
-
-// function check() {
-//     var els = document.getElementsByClassName("input1");
-//     alert(els);
-// }
+// TODO 브라우저 쿠키에 로그인 정보 저장 기능 구현
