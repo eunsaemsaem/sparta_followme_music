@@ -4,7 +4,7 @@ import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/f
 import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 // 쿠키 관련 모듈 호출
-import { getCookie, setCookie, deleteCookie } from "./cookie";
+import { setSession, getSession, deleteSession } from "./session.js";
 
 // firebase config
 const firebaseConfig = {
@@ -19,6 +19,30 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+// !! 세션에서 데이터 꺼내 쓰는법 !!
+// getSession("uid")
+
+// 로그인 체크 함수
+const loginCheck = () => {
+    const top_btns = document.querySelectorAll("body > div > nav > ol > ol")[0].children;
+    if (getSession("uid")){
+        // 로그인 되었을 때 sign in, sign up 버튼 삭제
+        for (let i=0; i<top_btns.length-1; i++){
+            top_btns[i].classList.add("hidden");
+        }
+        top_btns[top_btns.length-1].classList.remove("hidden");
+    } else {
+        // 로그인 상태가 아니라면 sign in, sign up 버튼 띄워줌
+        // 로그인 되었을 때 sign in, sign up 버튼 삭제
+        for (let i=0; i<top_btns.length-1; i++){
+            top_btns[i].classList.remove("hidden");
+        }
+        top_btns[top_btns.length-1].classList.add("hidden");    
+    }
+}
+
+loginCheck();
 
 // 음악 랭킹
 fetch("https://raw.githubusercontent.com/KoreanThinker/billboard-json/main/billboard-hot-100/recent.json").then(res => res.json()).then(data => {
@@ -141,43 +165,15 @@ function valueToStar(value) {
 }
 
 // 로그인
-const modal_bg = document.getElementById("modal_bg");
-const signup_btn = document.getElementById("signup_btn");
-const signin_btn = document.getElementById("signin_btn");
-
-const signup_form = document.getElementById("signup_form");
-const signin_form = document.getElementById("signin_form");
-
 const signin_form_btn = document.getElementById("signin_form_btn");
 
 const signup_link = document.getElementsByClassName("signup-link")[0];
 const signin_link = document.getElementsByClassName("login-link")[0];
 
-// 모달 바깥쪽 영역 클릭 이벤트
-modal_bg.addEventListener("click", e => {
-    // 바깥쪽 모달이 아니면 닫지 않는다.
-    if (e.target !== modal_bg) return;
-    modal_bg.classList.remove("on");
-    signup_form.classList.remove("on");
-    signin_form.classList.remove("on");
-})
-
-// 회원가입 버튼 이벤트
-signup_btn.addEventListener("click", () => {
-    console.log("회원가입 버튼 이벤트 클릭");
-    modal_bg.classList.add("on");
-    signup_btn_click();
-})
-
-// 로그인 폼 활성 버튼 클릭 이벤트
-signin_btn.addEventListener("click", () => {
-    console.log("로그인 버튼 이벤트 클릭");
-    modal_bg.classList.add("on");
-    signin_btn_click();
-})
+const signout_btn = document.getElementById("signout_btn");
 
 // 로그인 버튼 클릭 이벤트
-signin_form_btn.addEventListener("click", (e) => {
+signin_form_btn.addEventListener("click", e => {
     e.preventDefault();
     const signin_id = document.getElementById("signin_id").value;
     const signin_pw = document.getElementById("signin_pw").value;
@@ -186,28 +182,20 @@ signin_form_btn.addEventListener("click", (e) => {
     signInWithEmailAndPassword(auth, signin_id, signin_pw)
     .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
+        // 세션에 값 저장
+        setSession("uid", user.uid);
+        setSession("email", user.eamil);
+        // sign in 페이지 닫기
+        $("#loginbtn").modal("hide");
+        // top 버튼 확인
+        loginCheck();
     })
     .catch((error) => {
-        console.log("로그인 실패");
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        alert("계정이 없거나 아이디 또는 비밀번호를 잘못 입력하셨습니다.");
     });
 })
 
-// 로그인 폼의 회원가입 링크 클릭 이벤트
-signup_link.addEventListener("click", e => {
-    e.preventDefault();
-    signup_btn_click();
+signout_btn.addEventListener("click", () => {
+    deleteSession();
+    loginCheck();
 })
-
-// 폼을 띄우기 위한 함수
-function signin_btn_click(){
-    signin_form.classList.add("on");
-    signup_form.classList.remove("on");
-}
-
-function signup_btn_click(){
-    signup_form.classList.add("on");
-    signin_form.classList.remove("on");
-}
