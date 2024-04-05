@@ -3,6 +3,8 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebas
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+// 쿠키 관련 모듈 호출
+import { getCookie, setCookie, deleteCookie } from "./cookie";
 
 // firebase config
 const firebaseConfig = {
@@ -31,12 +33,12 @@ fetch("https://raw.githubusercontent.com/KoreanThinker/billboard-json/main/billb
 
 
             let temp_html = `<div class="card">
-            <img src="${image}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">${title}</h5>
-                <p class="card-text">${name}</p>
-            </div>
-        </div>`;
+                <img src="${image}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">${title}</h5>
+                    <p class="card-text">${name}</p>
+                </div>
+            </div>`;
             $('#rank-card').append(temp_html)
         }
 
@@ -103,18 +105,18 @@ docs.forEach((doc) => {
     let star = row['star'];
     let comment = row['comment'];
     let tempHtml = `
-        <div class="card mb-3">
-    <div class="card-body w p">
-        <!-- 댓글 작성자명 -->
-    <div id = "co_writer" class="card-header">${writer}</div>
-        <div class="card-body">
-            <!-- 별점 -->
-            <p id="co_vites" class="card-text co">${valueToStar(star)}</p>
-            <!-- 댓글 -->
-            <p id="co_text" class="card-text co">${comment}</p>
-        </div>
-</div>
-</div>`;
+            <div class="card mb-3">
+        <div class="card-body w p">
+            <!-- 댓글 작성자명 -->
+        <div id = "co_writer" class="card-header">${writer}</div>
+            <div class="card-body">
+                <!-- 별점 -->
+                <p id="co_vites" class="card-text co">${valueToStar(star)}</p>
+                <!-- 댓글 -->
+                <p id="co_text" class="card-text co">${comment}</p>
+            </div>
+    </div>
+    </div>`;
     if (row['id'] == id)
         $("#commentBlock").append(tempHtml);
 });
@@ -209,5 +211,3 @@ function signup_btn_click(){
     signup_form.classList.add("on");
     signin_form.classList.remove("on");
 }
-
-// TODO 브라우저 쿠키에 로그인 정보 저장 기능 구현
