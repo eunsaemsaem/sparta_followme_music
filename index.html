@@ -14,98 +14,176 @@
     <script type="module" src="./js/script.js"></script>
 </head>
 <link rel="stylesheet" href="./css/style.css" />
+<link rel="stylesheet" href="./css/login.css" />
 
 <body>
-    <!-- 검색 시작 -->
-    <div class="input-group mb-3">
-        <!-- 검색 -->
-        <input id="search" type="text" class="form-control" placeholder="Youtube Link 입력" aria-label="Youtube Link 입력"
-            aria-describedby="button-addon2">
-        <button id="searchBtn" class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
-    </div>
-    <!-- 검색 끝 -->
-    음악 랭킹
-    <!-- 음악 랭킹 시작 -->
-    <div class="card-group" id="rank-card">
+    <div>
+        <nav style="--bs-breadcrumb-divider: '';float:right;" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <ol class="breadcrumb">
+                    <!-- 모달을 실행할 버튼 -->
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginbtn"
+                        style="margin-right: 10px;">
+                        Login
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#signupbtn">
+                        Signup
+                    </button>
+                </ol>
+            </ol>
+
+        </nav>
+        <!-- 검색 시작 -->
+        <div class="input-group mb-3">
+            <!-- 검색 -->
+            <input id="search" type="text" class="form-control" placeholder="Youtube Link 입력"
+                aria-label="Youtube Link 입력" aria-describedby="button-addon2">
+            <button id="searchBtn" class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
+        </div>
+        <!-- 검색 끝 -->
+        음악 랭킹
+        <!-- 음악 랭킹 시작 -->
+        <div class="card-group" id="rank-card">
+        </div>
+
+        <!-- 음악 랭킹 끝 -->
+        <!-- 동영상 정보 시작 -->
+        <div class="card mb-3 mt-3">
+            <!-- 동영상 player 작성 -->
+            <div id="video" class="card">
+                <iframe id="videoIframe" width=100% height=100% src="https://www.youtube.com/embed/RwmcrmMABG0"
+                    title="알고리즘 코딩테스트 문제풀이 강의  - 5  나머지 합 구하기 (백준 10986)" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard\index.html-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <!-- 동영상 설명 시작 -->
+            <div class="card-body w">
+                <div class="row g-3">
+                    <div class="col-sm-10">
+                        <!-- 동영상 제목 -->
+                        <h5 id="title">Card title</h5>
+                    </div>
+                    <div class="col-sm">
+                        <img src="./images/thumb_up.svg">
+                    </div>
+                    <div class="col-sm">
+                        <!-- 좋아요 -->
+                        <h5 id="video_like" class="card-title">100</h5>
+                    </div>
+                </div>
+                <h5 class="card-title views">조회수: <span id="video_views"></span>회</h5>
+                <h5 id="channelName" class="card-title views">채널 이름</h5>
+                <!-- 동영상 설명 -->
+                <p id="video_description" class="card-text">동영상 설명 부분입니다.</p>
+            </div>
+            <!-- 동영상 정보 끝 -->
+        </div>
+        <!-- 댓글 작성 시작 -->
+        <div class="card mb-3">
+            <div class="card-body w p">
+                <!-- 댓글 작성자명 -->
+                <div id="co_writer" class="card-header p">
+                    <input id="co_writer_input" type="text" class="form-control" placeholder="작성자 입력"
+                        aria-label="Youtube Link 입력" aria-describedby="button-addon2">
+                </div>
+                <!-- 별점 선택 -->
+                <div class="input-group">
+                    <label class="input-group-text" for="inputGroupSelect01">별점</label>
+                    <select class="form-select" id="co_star">
+                        <option selected>별점선택</option>
+                        <option value="1">⭐</option>
+                        <option value="2">⭐⭐</option>
+                        <option value="3">⭐⭐⭐</option>
+                        <option value="3">⭐⭐⭐⭐</option>
+                        <option value="3">⭐⭐⭐⭐⭐</option>
+                    </select>
+                </div>
+                <div class="form-floating">
+                    <!-- 댓글 입력 -->
+                    <textarea class="form-control" id="co_input" style="height: 100px"></textarea>
+                    <label for="floatingTextarea2">Comments</label>
+                </div>
+                <button id="co_btn" class="btn btn-secondary w">댓글 작성</button>
+            </div>
+        </div>
+        <!-- 댓글 작성 끝 -->
+        <!-- 댓글 조회 시작 -->
+        <div class="card mb-3">
+            <div class="card-body w p">
+                <!-- 댓글 작성자명 -->
+                <div id="co_writer" class="card-header">작성자명</div>
+                <div class="card-body">
+                    <!-- 별점 -->
+                    <p id="co_vites" class="card-text co">⭐⭐⭐⭐⭐</p>
+                    <!-- 댓글 -->
+                    <p id="co_text" class="card-text co">이곳은 댓글을 작성하는 곳 입니다.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- 음악 랭킹 끝 -->
-    <!-- 동영상 정보 시작 -->
-    <div class="card mb-3 mt-3">
-        <!-- 동영상 player 작성 -->
-        <div id="video" class="card">
-            <iframe id="videoIframe" width=100% height=100% src="https://www.youtube.com/embed/RwmcrmMABG0"
-                title="알고리즘 코딩테스트 문제풀이 강의  - 5  나머지 합 구하기 (백준 10986)" frameborder="0"
-                allow="accelerometer; autoplay; clipboard\index.html-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <!-- 동영상 설명 시작 -->
-        <div class="card-body w">
-            <div class="row g-3">
-                <div class="col-sm-10">
-                    <!-- 동영상 제목 -->
-                    <h5 id="title">Card title</h5>
+    <!-- 모달 -->
+    <!-- 로그인 -->
+    <div class="modal fade" id="loginbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="col-sm">
-                    <img src="./images/thumb_up.svg">
+                <div class="modal-body">
+                    <form class="">
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control rounded-4" id="floatingInput"
+                                placeholder="name@example.com">
+                            <label for="floatingInput">Email address</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control rounded-4" id="floatingPassword"
+                                placeholder="Password">
+                            <label for="floatingPassword">Password</label>
+                        </div>
+                        <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Log in</button>
+                        <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+
+                    </form>
                 </div>
-                <div class="col-sm">
-                    <!-- 좋아요 -->
-                    <h5 id="video_like" class="card-title">100</h5>
-                </div>
-            </div>
-            <h5 class="card-title views">조회수: <span id="video_views"></span>회</h5>
-            <h5 id="channelName" class="card-title views">채널 이름</h5>
-            <!-- 동영상 설명 -->
-            <p id="video_description" class="card-text">동영상 설명 부분입니다.</p>
-        </div>
-        <!-- 동영상 정보 끝 -->
-    </div>
-    <!-- 댓글 작성 시작 -->
-    <div class="card mb-3">
-        <div class="card-body w p">
-            <!-- 댓글 작성자명 -->
-            <div id="co_writer" class="card-header p">
-                <input id="co_writer_input" type="text" class="form-control" placeholder="작성자 입력"
-                    aria-label="Youtube Link 입력" aria-describedby="button-addon2">
-            </div>
-            <!-- 별점 선택 -->
-            <div class="input-group">
-                <label class="input-group-text" for="inputGroupSelect01">별점</label>
-                <select class="form-select" id="co_star">
-                    <option selected>별점선택</option>
-                    <option value="1">⭐</option>
-                    <option value="2">⭐⭐</option>
-                    <option value="3">⭐⭐⭐</option>
-                    <option value="3">⭐⭐⭐⭐</option>
-                    <option value="3">⭐⭐⭐⭐⭐</option>
-                </select>
-            </div>
-            <div class="form-floating">
-                <!-- 댓글 입력 -->
-                <textarea class="form-control" id="co_input" style="height: 100px"></textarea>
-                <label for="floatingTextarea2">Comments</label>
-            </div>
-            <button id="co_btn" class="btn btn-secondary w">댓글 작성</button>
-        </div>
-    </div>
-    <!-- 댓글 작성 끝 -->
-    <!-- 댓글 조회 시작 -->
-    <div class="card mb-3">
-        <div class="card-body w p">
-            <!-- 댓글 작성자명 -->
-            <div id="co_writer" class="card-header">작성자명</div>
-            <div class="card-body">
-                <!-- 별점 -->
-                <p id="co_vites" class="card-text co">⭐⭐⭐⭐⭐</p>
-                <!-- 댓글 -->
-                <p id="co_text" class="card-text co">이곳은 댓글을 작성하는 곳 입니다.</p>
             </div>
         </div>
     </div>
+    <!-- 회원가입 -->
+    <div class="modal fade" id="signupbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Signup</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="">
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control rounded-4" id="floatingInput"
+                                placeholder="name@example.com">
+                            <label for="floatingInput">Email address</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control rounded-4" id="floatingPassword"
+                                placeholder="Password">
+                            <label for="floatingPassword">Password</label>
+                        </div>
+                        <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Sign up</button>
+                        <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- 부트스트랩 로드 부분입니다. -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 </body>
 

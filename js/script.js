@@ -2,6 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/fireba
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
 // firebase config
 const firebaseConfig = {
@@ -136,3 +137,5 @@ function valueToStar(value) {
     }
     return star;
 }
+
+// TODO 브라우저 쿠키에 로그인 정보 저장 기능 구현
