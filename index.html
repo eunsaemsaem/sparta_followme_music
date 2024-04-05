@@ -21,10 +21,14 @@
         <nav style="--bs-breadcrumb-divider: '';float:right;" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <ol class="breadcrumb">
-                    <li id="signin_btn" class="btn btn-outline-primary">sign in</a></li>
-                    <li id="signup_btn" class="btn btn-outline-dark" style="margin-left: 6px;" aria-current="page">sign
-                        up
-                    </li>
+                    <!-- 모달을 실행할 버튼 -->
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginbtn"
+                        style="margin-right: 10px;">
+                        Login
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#signupbtn">
+                        Signup
+                    </button>
                 </ol>
             </ol>
 
@@ -119,64 +123,67 @@
     </div>
 
     <!-- 모달 -->
-        <section id="modal_bg" class="modal-container forms">
-            <div class="form">
-                <!-- 회원가입 -->
-                <div id="signup_form" class="form-content">
-                    <header>Signup</header>
-                    <form action="#">
-                        <div class="field input-field4">
-                            <input type="email" placeholder="Email" class="input1">
-                        </div>
-
-                        <div class="field input-field5">
-                            <input type="password" placeholder="Create password" class="password">
-                        </div>
-
-                        <div class="field input-field6">
-                            <input type="password" placeholder="Confirm password" class="password">
-                            <i class='bx bx-hide eye-icon'></i>
-                        </div>
-
-                        <div class="field button-field">
-                            <button>Signup</button>
-                        </div>
-                    </form>
-
-                    <div class="form-link">
-                        <span>Already have an account? <a href="#" class="link login-link">Login</a></span>
-                    </div>
+    <!-- 로그인 -->
+    <div class="modal fade" id="loginbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div id="signin_form" class="form-content">
-                    <header>Login</header>
-                    <form action="#">
-                        <div class="field input-field1">
-                            <input id="signin_id" type="email" placeholder="Email" class="input">
+                <div class="modal-body">
+                    <form class="">
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control rounded-4" id="floatingInput"
+                                placeholder="name@example.com">
+                            <label for="floatingInput">Email address</label>
                         </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control rounded-4" id="floatingPassword"
+                                placeholder="Password">
+                            <label for="floatingPassword">Password</label>
+                        </div>
+                        <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Log in</button>
+                        <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
 
-                        <div class="field input-field2">
-                            <input id="signin_pw" type="password" placeholder="Password" class="password">
-                            <i class='bx bx-hide eye-icon'></i>
-                        </div>
-
-                        <div class="form-link">
-                            <br>
-                        </div>
-
-                        <div class="field button-field3">
-                            <button id="signin_form_btn">Login</button>
-                        </div>
                     </form>
-
-                    <div class="form-link">
-                        <span>Don't have an account? <a href="#" class="link signup-link">Signup</a></span>
-                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
+    <!-- 회원가입 -->
+    <div class="modal fade" id="signupbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Signup</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="">
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control rounded-4" id="floatingInput"
+                                placeholder="name@example.com">
+                            <label for="floatingInput">Email address</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control rounded-4" id="floatingPassword"
+                                placeholder="Password">
+                            <label for="floatingPassword">Password</label>
+                        </div>
+                        <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Sign up</button>
+                        <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- 부트스트랩 로드 부분입니다. -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 </body>
 
