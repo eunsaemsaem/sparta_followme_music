@@ -46,8 +46,7 @@ const loginCheck = () => {
 const getComments = async (videoId) => {
     // 댓글 출력
     //db 데이터 불러오기 동일한 id값만
-    // let docs = await getDocs(collection(db, "co_test"));
-    let docs = await getDocs(collection(db, "co_test", videoId, "data"));
+    let docs = await getDocs(collection(db, "comments", videoId, "data"));
     $("#commentBlock").empty();
     docs.forEach((doc) => {
         let row = doc.data();
@@ -185,8 +184,8 @@ $("#co_btn").click(async function () {
         'star': star,
         'comment': comment
     };
-    // await addDoc(collection(db, "test"), doc);
-    await setDoc(doc(collection(db, "co_test", videoId, "data")), data);
+    // 하위 컬렉션 생성하여 id지정 co_test/${videoId}/data/${uid}
+    await setDoc(doc(collection(db, "comments", videoId, "data"), getSession("uid")), data);
     // location.reload();
     getComments(videoId);
 })
@@ -231,15 +230,8 @@ $("#signBtn").click(e => {
             // ..
             window.alert("Error");
         });
-
-
-
 })
 
-
-
-
-// TODO 브라우저 쿠키에 로그인 정보 저장 기능 구현
 // 로그인
 const signin_form_btn = document.getElementById("signin_form_btn");
 
