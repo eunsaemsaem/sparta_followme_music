@@ -2,7 +2,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/fireba
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+// import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
 // firebase config
 const firebaseConfig = {
@@ -17,6 +18,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+// const user = auth.currentUser;
 
 // 음악 랭킹
 fetch("https://raw.githubusercontent.com/KoreanThinker/billboard-json/main/billboard-hot-100/recent.json").then(res => res.json()).then(data => {
@@ -137,5 +140,33 @@ function valueToStar(value) {
     }
     return star;
 }
+
+//회원가입
+$("#signBtn").click(async function () {
+    // console.log ("click sign btn");
+    // const submitButton = document.getElementById('signBtn');
+    let signEmail = document.getElementById('floatingSInput').value;
+    let signPw = document.getElementById('floatingSPassword').value;
+
+    createUserWithEmailAndPassword(auth, signEmail, signPw)
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            // ...
+            window.alert("Success");
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // ..
+            window.alert("Error");
+        });
+
+
+
+})
+
+
+
 
 // TODO 브라우저 쿠키에 로그인 정보 저장 기능 구현
