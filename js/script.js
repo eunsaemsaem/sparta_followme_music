@@ -90,6 +90,43 @@ $("#searchBtn").click(async function () {
         $('#title').text(title);
         $('#video_description').text(description);
         $('#channelName').text(channelName);
+        let title_nospace = title.replace(/(\s*)/g, "");
+
+        let suggestion_api = `https://www.googleapis.com/youtube/v3/search?key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&q=${title_nospace}`;
+        fetch(suggestion_api).then(res => res.json()).then(data => {
+            let suggestion_video_1 = data['items'][2]['id']['videoId'];
+            let suggestion_api_1 = `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&id=${suggestion_video_1}`
+            fetch(suggestion_api_1).then(res => res.json()).then(data => {
+                let video_1_title = data['items'][0]['snippet']['title'];
+                $('#video_title_1').text(video_1_title);
+                let suggestion_image_1 = data['items'][0]['snippet']['thumbnails']['default']['url'];
+                document.getElementById('suggestionUrl_1').src = suggestion_image_1;
+            })
+            let suggestion_video_2 = data['items'][3]['id']['videoId'];
+            let suggestion_api_2 = `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&id=${suggestion_video_2}`
+            fetch(suggestion_api_2).then(res => res.json()).then(data => {
+                let video_2_title = data['items'][0]['snippet']['title'];
+                $('#video_title_2').text(video_2_title);
+                let suggestion_image_2 = data['items'][0]['snippet']['thumbnails']['default']['url'];
+                document.getElementById('suggestionUrl_2').src = suggestion_image_2;
+            })
+        })
+        let channelId = data['items'][0]['snippet']['channelId'];
+        let channel_api = `https://www.googleapis.com/youtube/v3/search?key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&q=${channelId}`;
+        console.log(channel_api);
+        let channel_search=`https://www.googleapis.com/youtube/v3/search?key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&part=snippet&maxResults=25&channelId=${channelId}&type=video`
+        fetch(channel_search).then(res => res.json()).then(data => {
+            let suggestion_video_3 = data['items'][2]['id']['videoId'];
+            let suggestion_api_3 = `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&id=${suggestion_video_3}`
+            // console.log(suggestion_api_3);
+            fetch(suggestion_api_3).then(res => res.json()).then(data => {
+                let video_3_title = data['items'][0]['snippet']['title'];
+                $('#video_title_3').text(video_3_title);
+                let suggestion_image_3 = data['items'][0]['snippet']['thumbnails']['default']['url'];
+                document.getElementById('suggestionUrl_3').src = suggestion_image_3;
+            })
+        })
+
     })
     fetch(url_stat).then(res => res.json()).then(data => {
         let likeCount = data['items'][0]['statistics']['likeCount'];
