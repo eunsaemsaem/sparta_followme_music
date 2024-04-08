@@ -3,7 +3,11 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebas
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 // import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+<<<<<<< HEAD
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+=======
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+>>>>>>> c9fcca435efbffd86c04382abded4ec03babd7ef
 // 쿠키 관련 모듈 호출
 import { setSession, getSession, deleteSession } from "./session.js";
 
@@ -276,4 +280,19 @@ signin_form_btn.addEventListener("click", e => {
 signout_btn.addEventListener("click", () => {
     deleteSession();
     loginCheck();
+})
+const reset = document.getElementById("reset").addEventListener('click', (event) => {
+    event.preventDefault()
+    const email = document.getElementById('signin_id').value
+    sendPasswordResetEmail(auth, email)
+        .then(() => {
+            window.alert("메일 보냄")
+            // ..
+        })
+        .catch((error) => {
+            console.log('이메일입력')
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // ..
+        });
 })
