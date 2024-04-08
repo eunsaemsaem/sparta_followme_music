@@ -17,18 +17,6 @@
 <link rel="stylesheet" href="./css/login.css" />
 
 <body>
-    <!-- 검색 시작 -->
-    <div class="input-group mb-3">
-        <!-- 검색 -->
-        <input id="search" type="text" class="form-control" placeholder="Youtube Link 입력" aria-label="Youtube Link 입력"
-            aria-describedby="button-addon2">
-        <button id="searchBtn" class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
-    </div>
-    <!-- 검색 끝 -->
-    음악 랭킹
-    <!-- 음악 랭킹 시작 -->
-    <div class="card-group" id="rank-card">
-    </div>
     <div>
         <nav style="--bs-breadcrumb-divider: '';float:right;" aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -47,6 +35,20 @@
                 </ol>
             </ol>
         </nav>
+        <!-- 검색 시작 -->
+        <div class="input-group mb-3">
+            <!-- 검색 -->
+            <input id="search" type="text" class="form-control" placeholder="Youtube Link 입력"
+                aria-label="Youtube Link 입력" aria-describedby="button-addon2">
+            <button id="searchBtn" class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
+        </div>
+        <!-- 검색 끝 -->
+        음악 랭킹
+        <!-- 음악 랭킹 시작 -->
+        <div class="card-group" id="rank-card">
+        </div>
+
+        <!-- 음악 랭킹 끝 -->
         <!-- 동영상 정보 시작 -->
         <div class="card mb-3 mt-3">
             <!-- 동영상 player 작성 -->
@@ -78,35 +80,6 @@
             </div>
             <!-- 동영상 정보 끝 -->
         </div>
-        <!-- 동영상 정보 끝 -->
-    </div>
-    <div class="card-group">
-        <div class="card">
-            <img id="suggestionUrl_1" src="" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 id="video_title_1" class="card-title" href="">Card title</h5>
-            </div>
-        </div>
-        <div class="card">
-            <img id="suggestionUrl_2"  src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 id="video_title_2" class="card-title">Card title</h5>
-            </div>
-        </div>
-        <div class="card">
-            <img id="suggestionUrl_3"  src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 id="video_title_3" class="card-title">Card title</h5>
-            </div>
-        </div>
-    </div>
-    <!-- 댓글 작성 시작 -->
-    <div class="card mb-3">
-        <div class="card-body w p">
-            <!-- 댓글 작성자명 -->
-            <div id="co_writer" class="card-header p">
-                <input id="co_writer_input" type="text" class="form-control" placeholder="작성자 입력"
-                    aria-label="Youtube Link 입력" aria-describedby="button-addon2">
         <!-- 댓글 작성 시작 -->
         <div class="card mb-3">
             <div class="card-body w p">
