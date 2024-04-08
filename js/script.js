@@ -4,7 +4,6 @@ import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/f
 import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 // import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 // 쿠키 관련 모듈 호출
 import { setSession, getSession, deleteSession } from "./session.js";
 
