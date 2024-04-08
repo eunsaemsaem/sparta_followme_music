@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { collection, addDoc, setDoc, getDocs, doc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 // 쿠키 관련 모듈 호출
 import { setSession, getSession, deleteSession } from "./session.js";
@@ -40,6 +39,34 @@ const loginCheck = () => {
         }
         top_btns[top_btns.length-1].classList.add("hidden");    
     }
+}
+
+const getComments = async (videoId) => {
+    // 댓글 출력
+    //db 데이터 불러오기 동일한 id값만
+    // let docs = await getDocs(collection(db, "co_test"));
+    let docs = await getDocs(collection(db, "co_test", videoId, "data"));
+    $("#commentBlock").empty();
+    docs.forEach((doc) => {
+        let row = doc.data();
+        let writer = row['writer'];
+        let star = row['star'];
+        let comment = row['comment'];
+        let tempHtml = `
+                <div class="card mb-3">
+            <div class="card-body w p">
+                <!-- 댓글 작성자명 -->
+            <div id = "co_writer" class="card-header">${writer}</div>
+                <div class="card-body">
+                    <!-- 별점 -->
+                    <p id="co_vites" class="card-text co">${valueToStar(star)}</p>
+                    <!-- 댓글 -->
+                    <p id="co_text" class="card-text co">${comment}</p>
+                </div>
+        </div>
+        </div>`;
+        $("#commentBlock").append(tempHtml);
+    })    
 }
 
 loginCheck();
@@ -135,52 +162,32 @@ $("#searchBtn").click(async function () {
         $('#video_like').text(likeCount);
         $('#video_views').text(views);
     })
+
+    getComments(videoId);
 })
 
 // 댓글 저장 버튼 클릭 이벤트
 // 댓글 입력시 db에 저장 후 새로고침 필요
 $("#co_btn").click(async function () {
-    let id;
+    // let id;
+    let searchStr = document.getElementById('search').value;
+    // console.log(searchStr);
+    let videoId = searchStr.split("v=")[1].split("&")[0];
+    // console.log(videoId);
     let writer = $("#co_writer_input").val();
     let star = $("#co_star").val();
     let comment = $("#co_input").val();
     comment = comment.replaceAll('\n', '<br>');
-    let doc = {
-        'id': '0000',
+    let data = {
         'writer': writer,
         'star': star,
         'comment': comment
     };
-    await addDoc(collection(db, "test"), doc);
-    location.reload();
+    // await addDoc(collection(db, "test"), doc);
+    await setDoc(doc(collection(db, "co_test", videoId, "data")), data);
+    // location.reload();
+    getComments(videoId);
 })
-
-// 댓글 출력
-//db 데이터 불러오기 동일한 id값만
-let id = "0000";
-let docs = await getDocs(collection(db, "test"));
-$("#commentBlock").empty();
-docs.forEach((doc) => {
-    let row = doc.data();
-    let writer = row['writer'];
-    let star = row['star'];
-    let comment = row['comment'];
-    let tempHtml = `
-            <div class="card mb-3">
-        <div class="card-body w p">
-            <!-- 댓글 작성자명 -->
-        <div id = "co_writer" class="card-header">${writer}</div>
-            <div class="card-body">
-                <!-- 별점 -->
-                <p id="co_vites" class="card-text co">${valueToStar(star)}</p>
-                <!-- 댓글 -->
-                <p id="co_text" class="card-text co">${comment}</p>
-            </div>
-    </div>
-    </div>`;
-    if (row['id'] == id)
-        $("#commentBlock").append(tempHtml);
-});
 
 // 별표시 함수
 function valueToStar(value) {
