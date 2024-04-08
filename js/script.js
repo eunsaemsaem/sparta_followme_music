@@ -142,9 +142,10 @@ function valueToStar(value) {
 }
 
 //회원가입
-$("#signBtn").click(async function () {
+$("#signBtn").click(e => {
     // console.log ("click sign btn");
     // const submitButton = document.getElementById('signBtn');
+    e.preventDefault();
     let signEmail = document.getElementById('floatingSInput').value;
     let signPw = document.getElementById('floatingSPassword').value;
 
