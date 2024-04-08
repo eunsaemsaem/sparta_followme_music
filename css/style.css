@@ -28,3 +28,7 @@ body {
 .co {
     font-size: 15px;
 }
+
+.hidden {
+    display: none;
+}
