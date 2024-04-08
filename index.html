@@ -17,21 +17,31 @@
 <link rel="stylesheet" href="./css/login.css" />
 
 <body>
+    <!-- 검색 시작 -->
+    <div class="input-group mb-3">
+        <!-- 검색 -->
+        <input id="search" type="text" class="form-control" placeholder="Youtube Link 입력" aria-label="Youtube Link 입력"
+            aria-describedby="button-addon2">
+        <button id="searchBtn" class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
+    </div>
+    <!-- 검색 끝 -->
+    음악 랭킹
+    <!-- 음악 랭킹 시작 -->
+    <div class="card-group" id="rank-card">
+    </div>
     <div>
         <nav style="--bs-breadcrumb-divider: '';float:right;" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <ol class="breadcrumb">
                     <!-- 모달을 실행할 버튼 -->
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                        data-bs-target="#loginbtn" style="margin-right: 10px;">
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginbtn"
+                        style="margin-right: 10px;">
                         Sign in
                     </button>
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                        data-bs-target="#signupbtn">
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#signupbtn">
                         Sign up
                     </button>
-                    <button id="signout_btn" type="button" class="btn btn-outline-primary hidden"
-                        style="margin-left: 10px;">
+                    <button id="signout_btn" type="button" class="btn btn-outline-primary hidden"style="margin-left: 10px;">
                         Sign out
                     </button>
                 </ol>
@@ -82,6 +92,43 @@
             </div>
             <!-- 동영상 정보 끝 -->
         </div>
+        <!-- 동영상 정보 끝 -->
+    </div>
+    <div class="card-group">
+        <div class="card">
+            <img id="suggestionUrl_1" src="" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 id="video_title_1" class="card-title" href="">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+                    content. This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+                    content. This card has even longer content than the first to show that equal height action.</p>
+                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+    </div>
+    <!-- 댓글 작성 시작 -->
+    <div class="card mb-3">
+        <div class="card-body w p">
+            <!-- 댓글 작성자명 -->
+            <div id="co_writer" class="card-header p">
+                <input id="co_writer_input" type="text" class="form-control" placeholder="작성자 입력"
+                    aria-label="Youtube Link 입력" aria-describedby="button-addon2">
         <!-- 댓글 작성 시작 -->
         <div class="card mb-3">
             <div class="card-body w p">
@@ -136,18 +183,18 @@
                 </div>
                 <div class="modal-body">
                     <!-- <form class=""> -->
-                    <div class="form-floating mb-3">
-                        <input id="signin_id" type="email" class="form-control rounded-4" id="floatingInput"
-                            placeholder="name@example.com">
-                        <label for="floatingInput">Email address</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input id="signin_pw" type="password" class="form-control rounded-4" id="floatingPassword"
-                            placeholder="Password">
-                        <label for="floatingPassword">Password</label>
-                    </div>
-                    <button id="signin_form_btn" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary">Sign in</button>
-                    <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+                        <div class="form-floating mb-3">
+                            <input id="signin_id" type="email" class="form-control rounded-4" id="floatingInput"
+                                placeholder="name@example.com">
+                            <label for="floatingInput">Email address</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input id="signin_pw" type="password" class="form-control rounded-4" id="floatingPassword"
+                                placeholder="Password">
+                            <label for="floatingPassword">Password</label>
+                        </div>
+                        <button id="signin_form_btn" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary">Sign in</button>
+                        <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
 
                     <!-- </form> -->
                 </div>
