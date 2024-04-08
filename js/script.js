@@ -204,27 +204,35 @@ function valueToStar(value) {
     return star;
 }
 
-//회원가입
+//회원가입 
 $("#signBtn").click(e => {
     // console.log ("click sign btn");
-    // const submitButton = document.getElementById('signBtn');
     e.preventDefault();
     let signEmail = document.getElementById('floatingSInput').value;
     let signPw = document.getElementById('floatingSPassword').value;
+    let checkPw = document.getElementById('floatingSPassword2').value;
 
-    createUserWithEmailAndPassword(auth, signEmail, signPw)
+    if (!signEmail || !signPw || !checkPw) { //빈칸 있을 때
+        alert("Please fill in all fields");
+    }else if (signPw.length <= 6) { //pw 6자리 이하
+        alert("Password must be at least 6 characters long");
+    }else if (signPw != checkPw) { //pw확인과 다를때
+        alert("Please double-check your password");
+    } else {
+        createUserWithEmailAndPassword(auth, signEmail, signPw)
         .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
             // ...
-            window.alert("Success");
+            alert("Sign up successful");
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             // ..
-            window.alert("Error");
+            alert("Error. Please try again");
         });
+    }
 
 
 
