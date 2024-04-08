@@ -3,6 +3,8 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebas
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+// 쿠키 관련 모듈 호출
+import { setSession, getSession, deleteSession } from "./session.js";
 
 // firebase config
 const firebaseConfig = {
@@ -18,6 +20,30 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// !! 세션에서 데이터 꺼내 쓰는법 !!
+// getSession("uid")
+
+// 로그인 체크 함수
+const loginCheck = () => {
+    const top_btns = document.querySelectorAll("body > div > nav > ol > ol")[0].children;
+    if (getSession("uid")){
+        // 로그인 되었을 때 sign in, sign up 버튼 삭제
+        for (let i=0; i<top_btns.length-1; i++){
+            top_btns[i].classList.add("hidden");
+        }
+        top_btns[top_btns.length-1].classList.remove("hidden");
+    } else {
+        // 로그인 상태가 아니라면 sign in, sign up 버튼 띄워줌
+        // 로그인 되었을 때 sign in, sign up 버튼 삭제
+        for (let i=0; i<top_btns.length-1; i++){
+            top_btns[i].classList.remove("hidden");
+        }
+        top_btns[top_btns.length-1].classList.add("hidden");    
+    }
+}
+
+loginCheck();
+
 // 음악 랭킹
 fetch("https://raw.githubusercontent.com/KoreanThinker/billboard-json/main/billboard-hot-100/recent.json").then(res => res.json()).then(data => {
     let rows = data['data']
@@ -31,12 +57,12 @@ fetch("https://raw.githubusercontent.com/KoreanThinker/billboard-json/main/billb
 
 
             let temp_html = `<div class="card">
-            <img src="${image}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">${title}</h5>
-                <p class="card-text">${name}</p>
-            </div>
-        </div>`;
+                <img src="${image}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">${title}</h5>
+                    <p class="card-text">${name}</p>
+                </div>
+            </div>`;
             $('#rank-card').append(temp_html)
         }
 
@@ -103,18 +129,18 @@ docs.forEach((doc) => {
     let star = row['star'];
     let comment = row['comment'];
     let tempHtml = `
-        <div class="card mb-3">
-    <div class="card-body w p">
-        <!-- 댓글 작성자명 -->
-    <div id = "co_writer" class="card-header">${writer}</div>
-        <div class="card-body">
-            <!-- 별점 -->
-            <p id="co_vites" class="card-text co">${valueToStar(star)}</p>
-            <!-- 댓글 -->
-            <p id="co_text" class="card-text co">${comment}</p>
-        </div>
-</div>
-</div>`;
+            <div class="card mb-3">
+        <div class="card-body w p">
+            <!-- 댓글 작성자명 -->
+        <div id = "co_writer" class="card-header">${writer}</div>
+            <div class="card-body">
+                <!-- 별점 -->
+                <p id="co_vites" class="card-text co">${valueToStar(star)}</p>
+                <!-- 댓글 -->
+                <p id="co_text" class="card-text co">${comment}</p>
+            </div>
+    </div>
+    </div>`;
     if (row['id'] == id)
         $("#commentBlock").append(tempHtml);
 });
@@ -138,4 +164,38 @@ function valueToStar(value) {
     return star;
 }
 
-// TODO 브라우저 쿠키에 로그인 정보 저장 기능 구현
+// 로그인
+const signin_form_btn = document.getElementById("signin_form_btn");
+
+const signup_link = document.getElementsByClassName("signup-link")[0];
+const signin_link = document.getElementsByClassName("login-link")[0];
+
+const signout_btn = document.getElementById("signout_btn");
+
+// 로그인 버튼 클릭 이벤트
+signin_form_btn.addEventListener("click", e => {
+    e.preventDefault();
+    const signin_id = document.getElementById("signin_id").value;
+    const signin_pw = document.getElementById("signin_pw").value;
+
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, signin_id, signin_pw)
+    .then((userCredential) => {
+        const user = userCredential.user;
+        // 세션에 값 저장
+        setSession("uid", user.uid);
+        setSession("email", user.eamil);
+        // sign in 페이지 닫기
+        $("#loginbtn").modal("hide");
+        // top 버튼 확인
+        loginCheck();
+    })
+    .catch((error) => {
+        alert("계정이 없거나 아이디 또는 비밀번호를 잘못 입력하셨습니다.");
+    });
+})
+
+signout_btn.addEventListener("click", () => {
+    deleteSession();
+    loginCheck();
+})
