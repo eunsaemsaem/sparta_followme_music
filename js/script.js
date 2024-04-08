@@ -2,6 +2,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/fireba
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+// import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 // 쿠키 관련 모듈 호출
 import { setSession, getSession, deleteSession } from "./session.js";
@@ -19,6 +21,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+// const user = auth.currentUser;
 
 // !! 세션에서 데이터 꺼내 쓰는법 !!
 // getSession("uid")
@@ -201,6 +205,36 @@ function valueToStar(value) {
     return star;
 }
 
+//회원가입
+$("#signBtn").click(e => {
+    // console.log ("click sign btn");
+    // const submitButton = document.getElementById('signBtn');
+    e.preventDefault();
+    let signEmail = document.getElementById('floatingSInput').value;
+    let signPw = document.getElementById('floatingSPassword').value;
+
+    createUserWithEmailAndPassword(auth, signEmail, signPw)
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            // ...
+            window.alert("Success");
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // ..
+            window.alert("Error");
+        });
+
+
+
+})
+
+
+
+
+// TODO 브라우저 쿠키에 로그인 정보 저장 기능 구현
 // 로그인
 const signin_form_btn = document.getElementById("signin_form_btn");
 
