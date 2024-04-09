@@ -2,7 +2,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/fireba
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+// import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 // 쿠키 관련 모듈 호출
 import { setSession, getSession, deleteSession } from "./session.js";
 
@@ -19,6 +20,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+// const user = auth.currentUser;
 
 // !! 세션에서 데이터 꺼내 쓰는법 !!
 // getSession("uid")
@@ -68,13 +71,7 @@ fetch("https://raw.githubusercontent.com/KoreanThinker/billboard-json/main/billb
 
     })
 })
-
-// 검색 버튼 클릭 이벤트
-$("#searchBtn").click(async function () {
-    let searchStr = document.getElementById('search').value;
-    console.log(searchStr);
-    let videoId = searchStr.split("v=")[1].split("&")[0];
-    console.log(videoId);
+function searching(videoId){
     let iframe = document.getElementById('videoIframe');
     const embedUrl = `https://www.youtube.com/embed/${videoId}`;
     iframe.src = embedUrl;
@@ -101,6 +98,7 @@ $("#searchBtn").click(async function () {
                 $('#video_title_1').text(video_1_title);
                 let suggestion_image_1 = data['items'][0]['snippet']['thumbnails']['default']['url'];
                 document.getElementById('suggestionUrl_1').src = suggestion_image_1;
+                document.getElementById('video_id_1').val=suggestion_video_1;
             })
             let suggestion_video_2 = data['items'][3]['id']['videoId'];
             let suggestion_api_2 = `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&id=${suggestion_video_2}`
@@ -135,6 +133,18 @@ $("#searchBtn").click(async function () {
         $('#video_like').text(likeCount);
         $('#video_views').text(views);
     })
+}
+// 검색 버튼 클릭 이벤트
+$("#searchBtn").click(async function () {
+    let searchStr = document.getElementById('search').value;
+    let videoId = searchStr.split("v=")[1].split("&")[0];
+    console.log(videoId);
+    searching(videoId);
+})
+
+$("#searchBtn1").click(async function (){
+    let video_link_1=`https://www.youtube.com/embed/${document.getElementById('video_id_1').value}`;
+    searching(video_link_1);
 })
 
 // 댓글 저장 버튼 클릭 이벤트
@@ -201,6 +211,44 @@ function valueToStar(value) {
     return star;
 }
 
+//회원가입 
+$("#signBtn").click(e => {
+    // console.log ("click sign btn");
+    e.preventDefault();
+    let signEmail = document.getElementById('floatingSInput').value;
+    let signPw = document.getElementById('floatingSPassword').value;
+    let checkPw = document.getElementById('floatingSPassword2').value;
+
+    if (!signEmail || !signPw || !checkPw) { //빈칸 있을 때
+        alert("Please fill in all fields");
+    }else if (signPw.length <= 6) { //pw 6자리 이하
+        alert("Password must be at least 6 characters long");
+    }else if (signPw != checkPw) { //pw확인과 다를때
+        alert("Please double-check your password");
+    } else {
+        createUserWithEmailAndPassword(auth, signEmail, signPw)
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            // ...
+            alert("Sign up successful");
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // ..
+            alert("Error. Please try again");
+        });
+    }
+
+
+
+})
+
+
+
+
+// TODO 브라우저 쿠키에 로그인 정보 저장 기능 구현
 // 로그인
 const signin_form_btn = document.getElementById("signin_form_btn");
 
@@ -235,4 +283,19 @@ signin_form_btn.addEventListener("click", e => {
 signout_btn.addEventListener("click", () => {
     deleteSession();
     loginCheck();
+})
+const reset = document.getElementById("reset").addEventListener('click', (event) => {
+    event.preventDefault()
+    const email = document.getElementById('signin_id').value
+    sendPasswordResetEmail(auth, email)
+        .then(() => {
+            window.alert("메일 보냄")
+            // ..
+        })
+        .catch((error) => {
+            console.log('이메일입력')
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // ..
+        });
 })
