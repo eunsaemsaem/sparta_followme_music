@@ -72,7 +72,7 @@ h2{
     background: #ffffff;
     border-radius: 20px;
     width: 350px;
-    height: 200px;
+    height: 230px;
 }
 .modal .modal_popup .close_btn {
     display: block;
@@ -83,10 +83,14 @@ h2{
     color: #fff;
     cursor: pointer;
     transition: box-shadow 0.2s;
-    margin-top: 50px;
+    margin-top: 30px;
     margin-left: 100px;
     float: left;
 }
 #resetpwd{
     margin-left: 50px;
+    margin-top: 20px;
+}
+#clsbtn{
+    margin-left: 280px;
 }
