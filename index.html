@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>음악 검색 및 재생 페이지</title>
-    <script src="comment.js"></script>
     <!-- 부트스트랩 로드 부분입니다. -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -13,60 +12,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- 스크립트 로드 -->
     <script type="module" src="./js/script.js"></script>
-
-    <script>
-        fetch("https://raw.githubusercontent.com/KoreanThinker/billboard-json/main/billboard-hot-100/recent.json").then(res => res.json()).then(data => {
-            let rows = data['data']
-            rows.forEach((a, index) => {
-                if (index < 5) {
-                    console.log(a)
-
-                    let title = a['name']
-                    let name = a['artist']
-                    let image = a['image']
-
-                    let temp_html = `<div class="card">
-            <img src="${image}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">${title}</h5>
-                <p class="card-text">${name}</p>
-            </div>
-        </div>`;
-                    $('#rank-card').append(temp_html)
-                }
-            })
-        })
-
-    </script>
-
-    <script type="module">
-        // 동영상 정보 로딩 파트입니다.
-        $("#searchBtn").click(async function () {
-            var searchStr = document.getElementById('search').value;
-            console.log(searchStr);
-            let videoid = searchStr.split("v=")[1];
-            console.log(videoid);
-            let url_snippet = `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&id=${videoid}`;
-            let url_stat = `https://www.googleapis.com/youtube/v3/videos?part=statistics&key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&id=${videoid}`;
-            fetch(url_snippet).then(res => res.json()).then(data => {
-                let title = data['items'][0]['snippet']['title'];
-                let description = data['items'][0]['snippet']['description'];
-                let channelName = data['items'][0]['snippet']['channelTitle'];
-
-                $('#title').text(title);
-                $('#video_description').text(description);
-                $('#channelName').text(channelName);
-            })
-            fetch(url_stat).then(res => res.json()).then(data => {
-                let likeCount = data['items'][0]['statistics']['likeCount'];
-                let views = data['items'][0]['statistics']['viewCount'];
-
-                $('#video_like').text(likeCount);
-                $('#video_views').text(views);
-            })
-        })
-
-    </script>
 </head>
 <link rel="stylesheet" href="./css/style.css" />
 <link rel="stylesheet" href="./css/login.css" />
@@ -85,12 +30,7 @@
                     <button id="asdf" type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                         data-bs-target="#signupbtn">
                         Signup
-
-                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                            data-bs-target="#signupbtn">
-                            Sign up
-                        </button>
-                        <button id="signout_btn" type="button" class="btn btn-outline-primary hidden"
+                        <button id="signout_btn" type="button" class="btn btn-outline-primarcy hidden"
                             style="margin-left: 10px;">
                             Sign out
 
@@ -110,7 +50,6 @@
         <!-- 음악 랭킹 시작 -->
         <div class="card-group" id="rank-card">
         </div>
-
         <!-- 음악 랭킹 끝 -->
         <!-- 동영상 정보 시작 -->
         <div class="card mb-3 mt-3">
@@ -171,180 +110,110 @@
     <!-- 댓글 작성 시작 -->
     <div class="card mb-3">
         <div class="card-body w p">
-            <!-- 댓글 작성자명 -->
-            <div id="co_writer" class="card-header p">
-                <input id="co_writer_input" type="text" class="form-control" placeholder="작성자 입력"
-                    aria-label="Youtube Link 입력" aria-describedby="button-addon2">
-                <!-- 댓글 작성 시작 -->
-                <div class="card mb-3">
-                    <div class="card-body w p">
-                        <!-- 댓글 작성자명 -->
-                        <div id="co_writer" class="card-header p">
-                            <input id="co_writer_input" type="text" class="form-control" placeholder="작성자 입력"
-                                aria-label="Youtube Link 입력" aria-describedby="button-addon2">
-                        </div>
-                        <!-- 별점 선택 -->
-                        <div class="input-group">
-                            <label class="input-group-text" for="inputGroupSelect01">별점</label>
-                            <select class="form-select" id="co_star">
-                                <option selected>별점선택</option>
-                                <option value="1">⭐</option>
-                                <option value="2">⭐⭐</option>
-                                <option value="3">⭐⭐⭐</option>
-                                <option value="3">⭐⭐⭐⭐</option>
-                                <option value="3">⭐⭐⭐⭐⭐</option>
-                            </select>
-                        </div>
-                        <div class="form-floating">
-                            <!-- 댓글 입력 -->
-                            <textarea class="form-control" id="co_input" style="height: 100px"></textarea>
-                            <label for="floatingTextarea2">Comments</label>
-                        </div>
-                        <button id="co_btn" class="btn btn-secondary w">댓글 작성</button>
+            <!-- 댓글 작성 시작 -->
+            <div class="card mb-3">
+                <div class="card-body w p">
+                    <!-- 댓글 작성자명 -->
+                    <div id="co_writer" class="card-header p">
+                        <input id="co_writer_input" type="text" class="form-control" placeholder="작성자 입력"
+                            aria-label="Youtube Link 입력" aria-describedby="button-addon2">
                     </div>
+                    <!-- 별점 선택 -->
+                    <div class="input-group">
+                        <label class="input-group-text" for="inputGroupSelect01">별점</label>
+                        <select class="form-select" id="co_star">
+                            <option selected>별점선택</option>
+                            <option value="1">⭐</option>
+                            <option value="2">⭐⭐</option>
+                            <option value="3">⭐⭐⭐</option>
+                            <option value="4">⭐⭐⭐⭐</option>
+                            <option value="5">⭐⭐⭐⭐⭐</option>
+                        </select>
+                    </div>
+                    <div class="form-floating">
+                        <!-- 댓글 입력 -->
+                        <textarea class="form-control" id="co_input" style="height: 100px"></textarea>
+                        <label for="floatingTextarea2">Comments</label>
+                    </div>
+                    <button id="co_btn" class="btn btn-secondary w">댓글 작성</button>
                 </div>
-                <!-- 댓글 작성 끝 -->
-                <!-- 댓글 조회 시작 -->
-                <div class="card mb-3">
-                    <div class="card-body w p">
-                        <!-- 댓글 작성자명 -->
-                        <div id="co_writer" class="card-header">작성자명</div>
-                        <div class="card-body">
-                            <!-- 별점 -->
-                            <p id="co_vites" class="card-text co">⭐⭐⭐⭐⭐</p>
-                            <!-- 댓글 -->
-                            <p id="co_text" class="card-text co">이곳은 댓글을 작성하는 곳 입니다.</p>
-                        </div>
+            </div>
+            <!-- 댓글 작성 끝 -->
+            <!-- 댓글 조회 시작 -->
+            <div class="card mb-3">
+                <div class="card-body w p" id="commentBlock">
+                    <!-- 댓글 작성자명 -->
+                    <div id="co_writer" class="card-header">작성자명</div>
+                    <div class="card-body">
+                        <!-- 별점 -->
+                        <p id="co_vites" class="card-text co">⭐⭐⭐⭐⭐</p>
+                        <!-- 댓글 -->
+                        <p id="co_text" class="card-text co">이곳은 댓글을 작성하는 곳 입니다.</p>
                     </div>
                 </div>
             </div>
-
-            <!-- 로그인 -->
-            <div class="modal fade" id="loginbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Sign in</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- 로그인 -->
+        <div class="modal fade" id="loginbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Sign in</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- <form class=""> -->
+                        <div class="form-floating mb-3">
+                            <input id="signin_id" type="email" class="form-control rounded-4" id="floatingInput"
+                                placeholder="name@example.com">
+                            <label for="floatingInput">Email address</label>
                         </div>
-                        <div class="modal-body">
-                            <!-- <form class=""> -->
+                        <div class="form-floating mb-3">
+                            <input id="signin_pw" type="password" class="form-control rounded-4" id="floatingPassword"
+                                placeholder="Password">
+                            <label for="floatingPassword">Password</label>
+                        </div>
+                        <button id="signin_form_btn" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary">Sign
+                            in</button>
+                        <a href="#" id="reset">비밀번호 재설정</a>
+                        <!-- </form> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 회원가입 -->
+        <div class="modal fade" id="signupbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Signup</h1>
+                        <button id="thisbtn" type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="">
                             <div class="form-floating mb-3">
-                                <input id="signin_id" type="email" class="form-control rounded-4" id="floatingInput"
+                                <input type="email" class="form-control rounded-4" id="floatingSInput"
                                     placeholder="name@example.com">
-                                <label for="floatingInput">Email address</label>
+                                <label for="floatingSInput">Email address</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input id="signin_pw" type="password" class="form-control rounded-4"
-                                    id="floatingPassword" placeholder="Password">
-                                <label for="floatingPassword">Password</label>
+                                <input type="password" class="form-control rounded-4" id="floatingSPassword"
+                                    placeholder="Password">
+                                <label for="floatingSPassword">Password</label>
                             </div>
-                            <button id="signin_form_btn" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary">Sign
-                                in</button>
+                            <button id="signBtn" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Sign
+                                up</button>
                             <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
-
-                            <!-- </form> -->
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
-            <!-- 회원가입 -->
-            <div class="modal fade" id="signupbtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Signup</h1>
-                            <button id="thisbtn" type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form class="">
-                                <div class="form-floating mb-3">
-                                    <input type="email" class="form-control rounded-4" id="floatingSInput"
-                                        placeholder="name@example.com">
-                                    <label for="floatingSInput">Email address</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input type="password" class="form-control rounded-4" id="floatingSPassword"
-                                        placeholder="Password">
-                                    <label for="floatingSPassword">Password</label>
-                                </div>
-                                <button id="signBtn" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary"
-                                    type="submit">Sign up</button>
-                                <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- 부트스트랩 로드 부분입니다. -->
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-                crossorigin="anonymous"></script>
-
-            <!-- 파이어베이스 부분입니다.-->
-            <script type="module">
-
-                import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-                import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-                import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-                import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-
-                const firebaseConfig = {
-                    apiKey: "AIzaSyCdAbo_ViOKm3gYiMKDm1a4PLzvQXjK6IQ",
-                    authDomain: "team-followme-miniproject.firebaseapp.com",
-                    projectId: "team-followme-miniproject",
-                    storageBucket: "team-followme-miniproject.appspot.com",
-                    messagingSenderId: "475357059255",
-                    appId: "1:475357059255:web:59ae12e37a4ee731b85532",
-                    measurementId: "G-KHREYSMK6P"
-                };
-
-                const app = initializeApp(firebaseConfig);
-                const db = getFirestore(app);
-
-                // 댓글 저장 버튼기능
-                $("#co_btn").click(async function () {
-                    let writer = $("#co_writer_input").val();
-                    let star = $("#co_star").val();
-                    let comment = $("#co_input").val();
-                    comment = comment.replaceAll('\n', '<br>');
-
-                    // db에 댓글저장
-                    let doc = {
-                        'id': getVideoId(),
-                        'writer': writer,
-                        'star': star,
-                        'comment': comment
-                    };
-                    addComment(writer, star, comment);
-                    await addDoc(collection(db, "test"), doc);
-
-                    // 저장후 초기화
-                    $("#co_writer_input").val("");
-                    $("#co_star").val("별점선택");
-                    $("#co_input").val("");
-                });
-
-                // 링크 검색 버튼기능
-                $("#searchBtn").click(async function () {
-                    var searchStr = document.getElementById('search').value;
-                    const videoId = searchStr.split("v=")[1].split("&")[0];
-                    const embedUrl = `https://www.youtube.com/embed/${videoId}`;
-                    setVideoId(videoId);
-
-                    var iframe = document.getElementById('videoIframe');
-                    iframe.src = embedUrl;
-                    $("#commentBlock").empty();
-                    let docs = await getDocs(collection(db, "test"));
-                    initComment(docs);
-                });
-
-                //db 데이터 불러오기 동일한 id값만
-                let docs = await getDocs(collection(db, "test"));
-                initComment(docs);
-            </script>
+        </div>
+        <!-- 부트스트랩 로드 부분입니다. -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
 </body>
 
 </html>

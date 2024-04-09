@@ -29,19 +29,19 @@ const auth = getAuth(app);
 // 로그인 체크 함수
 const loginCheck = () => {
     const top_btns = document.querySelectorAll("body > div > nav > ol > ol")[0].children;
-    if (getSession("uid")){
+    if (getSession("uid")) {
         // 로그인 되었을 때 sign in, sign up 버튼 삭제
-        for (let i=0; i<top_btns.length-1; i++){
+        for (let i = 0; i < top_btns.length - 1; i++) {
             top_btns[i].classList.add("hidden");
         }
-        top_btns[top_btns.length-1].classList.remove("hidden");
+        top_btns[top_btns.length - 1].classList.remove("hidden");
     } else {
         // 로그인 상태가 아니라면 sign in, sign up 버튼 띄워줌
         // 로그인 되었을 때 sign in, sign up 버튼 삭제
-        for (let i=0; i<top_btns.length-1; i++){
+        for (let i = 0; i < top_btns.length - 1; i++) {
             top_btns[i].classList.remove("hidden");
         }
-        top_btns[top_btns.length-1].classList.add("hidden");    
+        top_btns[top_btns.length - 1].classList.add("hidden");
     }
 }
 
@@ -78,6 +78,7 @@ $("#searchBtn").click(async function () {
     console.log(searchStr);
     let videoId = searchStr.split("v=")[1].split("&")[0];
     console.log(videoId);
+    videoLinkID = videoId;
     let iframe = document.getElementById('videoIframe');
     const embedUrl = `https://www.youtube.com/embed/${videoId}`;
     iframe.src = embedUrl;
@@ -117,7 +118,7 @@ $("#searchBtn").click(async function () {
         let channelId = data['items'][0]['snippet']['channelId'];
         let channel_api = `https://www.googleapis.com/youtube/v3/search?key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&q=${channelId}`;
         console.log(channel_api);
-        let channel_search=`https://www.googleapis.com/youtube/v3/search?key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&part=snippet&maxResults=25&channelId=${channelId}&type=video`
+        let channel_search = `https://www.googleapis.com/youtube/v3/search?key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&part=snippet&maxResults=25&channelId=${channelId}&type=video`
         fetch(channel_search).then(res => res.json()).then(data => {
             let suggestion_video_3 = data['items'][2]['id']['videoId'];
             let suggestion_api_3 = `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&id=${suggestion_video_3}`
@@ -138,52 +139,33 @@ $("#searchBtn").click(async function () {
         $('#video_like').text(likeCount);
         $('#video_views').text(views);
     })
+    // 검색시 댓글창 초기화
+    let docs = await getDocs(collection(db, "test"));
+    initComment(docs);
 })
 
-// 댓글 저장 버튼 클릭 이벤트
-// 댓글 입력시 db에 저장 후 새로고침 필요
+let videoLinkID = '0000';
+
+// 댓글저장 버튼 클릭 이벤트
 $("#co_btn").click(async function () {
-    let id;
+
     let writer = $("#co_writer_input").val();
     let star = $("#co_star").val();
     let comment = $("#co_input").val();
     comment = comment.replaceAll('\n', '<br>');
     let doc = {
-        'id': '0000',
+        'id': videoLinkID,
         'writer': writer,
         'star': star,
         'comment': comment
     };
+    addComment(writer, star, comment);
     await addDoc(collection(db, "test"), doc);
-    location.reload();
+    // 저장후 초기화
+    $("#co_writer_input").val("");
+    $("#co_star").val("별점선택");
+    $("#co_input").val("");
 })
-
-// 댓글 출력
-//db 데이터 불러오기 동일한 id값만
-let id = "0000";
-let docs = await getDocs(collection(db, "test"));
-$("#commentBlock").empty();
-docs.forEach((doc) => {
-    let row = doc.data();
-    let writer = row['writer'];
-    let star = row['star'];
-    let comment = row['comment'];
-    let tempHtml = `
-            <div class="card mb-3">
-        <div class="card-body w p">
-            <!-- 댓글 작성자명 -->
-        <div id = "co_writer" class="card-header">${writer}</div>
-            <div class="card-body">
-                <!-- 별점 -->
-                <p id="co_vites" class="card-text co">${valueToStar(star)}</p>
-                <!-- 댓글 -->
-                <p id="co_text" class="card-text co">${comment}</p>
-            </div>
-    </div>
-    </div>`;
-    if (row['id'] == id)
-        $("#commentBlock").append(tempHtml);
-});
 
 // 별표시 함수
 function valueToStar(value) {
@@ -202,6 +184,39 @@ function valueToStar(value) {
             star = '⭐⭐⭐⭐⭐'; break;
     }
     return star;
+}
+// 댓글창 append 함수
+async function addComment(writer, star, comment) {
+    let tempHtml = `
+        <div class="card mb-3">
+    <div class="card-body w p">
+        <!-- 댓글 작성자명 -->
+    <div id = "co_writer" class="card-header">${writer}</div>
+        <div class="card-body">
+            <!-- 별점 -->
+            <p id="co_vites" class="card-text co">${valueToStar(star)}</p>
+            <!-- 댓글 -->
+            <p id="co_text" class="card-text co">${comment}</p>
+        </div>
+</div>
+</div>`;
+
+    $("#commentBlock").append(tempHtml);
+}
+// 댓글창 초기화
+async function initComment(docs) {
+    $("#commentBlock").empty();
+    console.log(docs);
+    docs.forEach((doc) => {
+        let row = doc.data();
+        let writer = row['writer'];
+        let star = row['star'];
+        let comment = row['comment'];
+        let id = row['id'];
+        if (id == videoLinkID) {
+            addComment(writer, star, comment);
+        }
+    });
 }
 
 //회원가입
@@ -250,19 +265,19 @@ signin_form_btn.addEventListener("click", e => {
 
     const auth = getAuth();
     signInWithEmailAndPassword(auth, signin_id, signin_pw)
-    .then((userCredential) => {
-        const user = userCredential.user;
-        // 세션에 값 저장
-        setSession("uid", user.uid);
-        setSession("email", user.eamil);
-        // sign in 페이지 닫기
-        $("#loginbtn").modal("hide");
-        // top 버튼 확인
-        loginCheck();
-    })
-    .catch((error) => {
-        alert("계정이 없거나 아이디 또는 비밀번호를 잘못 입력하셨습니다.");
-    });
+        .then((userCredential) => {
+            const user = userCredential.user;
+            // 세션에 값 저장
+            setSession("uid", user.uid);
+            setSession("email", user.eamil);
+            // sign in 페이지 닫기
+            $("#loginbtn").modal("hide");
+            // top 버튼 확인
+            loginCheck();
+        })
+        .catch((error) => {
+            alert("계정이 없거나 아이디 또는 비밀번호를 잘못 입력하셨습니다.");
+        });
 })
 
 signout_btn.addEventListener("click", () => {
