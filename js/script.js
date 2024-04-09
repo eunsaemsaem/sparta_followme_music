@@ -2,12 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/fireba
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-// import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-<<<<<<< HEAD
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-=======
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
->>>>>>> c9fcca435efbffd86c04382abded4ec03babd7ef
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 // 쿠키 관련 모듈 호출
 import { setSession, getSession, deleteSession } from "./session.js";
 
@@ -33,19 +28,19 @@ const auth = getAuth(app);
 // 로그인 체크 함수
 const loginCheck = () => {
     const top_btns = document.querySelectorAll("body > div > nav > ol > ol")[0].children;
-    if (getSession("uid")){
+    if (getSession("uid")) {
         // 로그인 되었을 때 sign in, sign up 버튼 삭제
-        for (let i=0; i<top_btns.length-1; i++){
+        for (let i = 0; i < top_btns.length - 1; i++) {
             top_btns[i].classList.add("hidden");
         }
-        top_btns[top_btns.length-1].classList.remove("hidden");
+        top_btns[top_btns.length - 1].classList.remove("hidden");
     } else {
         // 로그인 상태가 아니라면 sign in, sign up 버튼 띄워줌
         // 로그인 되었을 때 sign in, sign up 버튼 삭제
-        for (let i=0; i<top_btns.length-1; i++){
+        for (let i = 0; i < top_btns.length - 1; i++) {
             top_btns[i].classList.remove("hidden");
         }
-        top_btns[top_btns.length-1].classList.add("hidden");    
+        top_btns[top_btns.length - 1].classList.add("hidden");
     }
 }
 
@@ -121,7 +116,7 @@ $("#searchBtn").click(async function () {
         let channelId = data['items'][0]['snippet']['channelId'];
         let channel_api = `https://www.googleapis.com/youtube/v3/search?key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&q=${channelId}`;
         console.log(channel_api);
-        let channel_search=`https://www.googleapis.com/youtube/v3/search?key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&part=snippet&maxResults=25&channelId=${channelId}&type=video`
+        let channel_search = `https://www.googleapis.com/youtube/v3/search?key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&part=snippet&maxResults=25&channelId=${channelId}&type=video`
         fetch(channel_search).then(res => res.json()).then(data => {
             let suggestion_video_3 = data['items'][2]['id']['videoId'];
             let suggestion_api_3 = `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&id=${suggestion_video_3}`
@@ -210,33 +205,44 @@ function valueToStar(value) {
 
 //회원가입 
 $("#signBtn").click(e => {
-    // console.log ("click sign btn");
     e.preventDefault();
     let signEmail = document.getElementById('floatingSInput').value;
     let signPw = document.getElementById('floatingSPassword').value;
     let checkPw = document.getElementById('floatingSPassword2').value;
+    let signName = document.getElementById('floatingSInputN').value;
 
     if (!signEmail || !signPw || !checkPw) { //빈칸 있을 때
         alert("Please fill in all fields");
-    }else if (signPw.length <= 6) { //pw 6자리 이하
+    } else if (signPw.length <= 6) { //pw 6자리 이하
         alert("Password must be at least 6 characters long");
-    }else if (signPw != checkPw) { //pw확인과 다를때
+    } else if (signPw != checkPw) { //pw확인과 다를때
         alert("Please double-check your password");
     } else {
         createUserWithEmailAndPassword(auth, signEmail, signPw)
-        .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            // ...
-            alert("Sign up successful");
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // ..
-            alert("Error. Please try again");
-        });
+            .then((userCredential) => {
+                const user = userCredential.user;
+                alert("Sign up successful");
+                $('#signupbtn').modal('hide'); //회원가입 완료 후 모달 창 닫기
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // ..
+                alert("Error. Please try again");
+            });
     }
+
+    //사용자 이름 - 프로필 업데이트
+    // const displayName = user.displayName;
+    // const email = user.email;
+    // const emailVerified = user.emailVerified;
+
+    updateProfile(auth.currentUser, {
+        displayName: signName
+    });
+
+    console.log(user.displayName); ////////////
+
 
 
 
@@ -262,25 +268,33 @@ signin_form_btn.addEventListener("click", e => {
 
     const auth = getAuth();
     signInWithEmailAndPassword(auth, signin_id, signin_pw)
-    .then((userCredential) => {
-        const user = userCredential.user;
-        // 세션에 값 저장
-        setSession("uid", user.uid);
-        setSession("email", user.eamil);
-        // sign in 페이지 닫기
-        $("#loginbtn").modal("hide");
-        // top 버튼 확인
-        loginCheck();
-    })
-    .catch((error) => {
-        alert("계정이 없거나 아이디 또는 비밀번호를 잘못 입력하셨습니다.");
-    });
+        .then((userCredential) => {
+            const user = userCredential.user;
+            // 세션에 값 저장
+            setSession("uid", user.uid);
+            setSession("email", user.eamil);
+            // sign in 페이지 닫기
+            $("#loginbtn").modal("hide");
+            // top 버튼 확인
+            loginCheck();
+        })
+        .catch((error) => {
+            alert("계정이 없거나 아이디 또는 비밀번호를 잘못 입력하셨습니다.");
+        });
 })
 
 signout_btn.addEventListener("click", () => {
     deleteSession();
     loginCheck();
 })
+const modal = document.querySelector('.modal');
+const modalOpen = document.querySelector('.modal_btn');
+
+//열기 버튼을 눌렀을 때 모달팝업이 열림
+modalOpen.addEventListener('click', function () {
+    //'on' class 추가
+    modal.classList.add('on');
+});
 const reset = document.getElementById("reset").addEventListener('click', (event) => {
     event.preventDefault()
     const email = document.getElementById('signin_id').value
