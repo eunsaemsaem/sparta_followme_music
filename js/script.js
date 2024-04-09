@@ -3,7 +3,11 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebas
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 // import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+<<<<<<< HEAD
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+=======
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+>>>>>>> c9fcca435efbffd86c04382abded4ec03babd7ef
 // 쿠키 관련 모듈 호출
 import { setSession, getSession, deleteSession } from "./session.js";
 
@@ -204,27 +208,35 @@ function valueToStar(value) {
     return star;
 }
 
-//회원가입
+//회원가입 
 $("#signBtn").click(e => {
     // console.log ("click sign btn");
-    // const submitButton = document.getElementById('signBtn');
     e.preventDefault();
     let signEmail = document.getElementById('floatingSInput').value;
     let signPw = document.getElementById('floatingSPassword').value;
+    let checkPw = document.getElementById('floatingSPassword2').value;
 
-    createUserWithEmailAndPassword(auth, signEmail, signPw)
+    if (!signEmail || !signPw || !checkPw) { //빈칸 있을 때
+        alert("Please fill in all fields");
+    }else if (signPw.length <= 6) { //pw 6자리 이하
+        alert("Password must be at least 6 characters long");
+    }else if (signPw != checkPw) { //pw확인과 다를때
+        alert("Please double-check your password");
+    } else {
+        createUserWithEmailAndPassword(auth, signEmail, signPw)
         .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
             // ...
-            window.alert("Success");
+            alert("Sign up successful");
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             // ..
-            window.alert("Error");
+            alert("Error. Please try again");
         });
+    }
 
 
 

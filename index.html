@@ -30,7 +30,7 @@
 
                     <button id="asdf" type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                         data-bs-target="#signupbtn">
-                        Signup
+                        Sign up
                         <button id="signout_btn" type="button" class="btn btn-outline-primary hidden"
                             style="margin-left: 10px;">
                             Sign out
@@ -190,7 +190,11 @@
                             </div>
                             <button id="signin_form_btn" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary">Sign
                                 in</button>
+
                                 <button type="button" class="modal_btn">forgotpassword?</button>
+
+                            <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+
                             <!-- </form> -->
                         </div>
                     </div>
@@ -201,7 +205,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Signup</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Sign up</h1>
                             <button id="thisbtn" type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
@@ -210,12 +214,17 @@
                                 <div class="form-floating mb-3">
                                     <input type="email" class="form-control rounded-4" id="floatingSInput"
                                         placeholder="name@example.com">
-                                    <label for="floatingSInput">Email address</label>
+                                    <label for="floatingSInput">Email Address</label>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="password" class="form-control rounded-4" id="floatingSPassword"
                                         placeholder="Password">
                                     <label for="floatingSPassword">Password</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control rounded-4" id="floatingSPassword2"
+                                        placeholder="Check Password">
+                                    <label for="floatingSPassword">Re-enter Password</label>
                                 </div>
                                 <button id="signBtn" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary"
                                     type="submit">Sign up</button>
