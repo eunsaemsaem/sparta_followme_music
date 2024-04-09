@@ -144,7 +144,20 @@ $("#searchBtn").click(async function () {
     initComment(docs);
 })
 
+// 로그인시 ID 댓글창에 띄우기 (일단 이메일)
+const loginIdCommentSet = () => {
+    console.log(getSession('email'));
+    if (getSession('email')) {
+        let writerId = getSession('email');
+        $("#co_writer_input").val(writerId);
+    }
+    else {
+        $("#co_writer_input").val('Anonymous');
+    }
+}
+
 let videoLinkID = '0000';
+loginIdCommentSet();
 
 // 댓글저장 버튼 클릭 이벤트
 $("#co_btn").click(async function () {
@@ -162,7 +175,7 @@ $("#co_btn").click(async function () {
     addComment(writer, star, comment);
     await addDoc(collection(db, "test"), doc);
     // 저장후 초기화
-    $("#co_writer_input").val("");
+    //$("#co_writer_input").val("");
     $("#co_star").val("별점선택");
     $("#co_input").val("");
 })
@@ -185,7 +198,7 @@ function valueToStar(value) {
     }
     return star;
 }
-// 댓글창 append 함수
+// 댓글창 append
 async function addComment(writer, star, comment) {
     let tempHtml = `
         <div class="card mb-3">
@@ -269,11 +282,12 @@ signin_form_btn.addEventListener("click", e => {
             const user = userCredential.user;
             // 세션에 값 저장
             setSession("uid", user.uid);
-            setSession("email", user.eamil);
+            setSession("email", user.email);
             // sign in 페이지 닫기
             $("#loginbtn").modal("hide");
             // top 버튼 확인
             loginCheck();
+            loginIdCommentSet();
         })
         .catch((error) => {
             alert("계정이 없거나 아이디 또는 비밀번호를 잘못 입력하셨습니다.");
@@ -283,4 +297,5 @@ signin_form_btn.addEventListener("click", e => {
 signout_btn.addEventListener("click", () => {
     deleteSession();
     loginCheck();
+    loginIdCommentSet();
 })
