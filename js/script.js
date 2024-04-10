@@ -98,7 +98,7 @@ function searching(videoId){
                 $('#video_title_1').text(video_1_title);
                 let suggestion_image_1 = data['items'][0]['snippet']['thumbnails']['default']['url'];
                 document.getElementById('suggestionUrl_1').src = suggestion_image_1;
-                document.getElementById('video_id_1').val=suggestion_video_1;
+                $('#video_id_1').text(suggestion_video_1);
             })
             let suggestion_video_2 = data['items'][3]['id']['videoId'];
             let suggestion_api_2 = `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&id=${suggestion_video_2}`
@@ -107,6 +107,7 @@ function searching(videoId){
                 $('#video_title_2').text(video_2_title);
                 let suggestion_image_2 = data['items'][0]['snippet']['thumbnails']['default']['url'];
                 document.getElementById('suggestionUrl_2').src = suggestion_image_2;
+                $('#video_id_2').text(suggestion_video_1);
             })
         })
         let channelId = data['items'][0]['snippet']['channelId'];
@@ -122,6 +123,7 @@ function searching(videoId){
                 $('#video_title_3').text(video_3_title);
                 let suggestion_image_3 = data['items'][0]['snippet']['thumbnails']['default']['url'];
                 document.getElementById('suggestionUrl_3').src = suggestion_image_3;
+                $('#video_id_3').text(suggestion_video_3);
             })
         })
 
@@ -143,10 +145,15 @@ $("#searchBtn").click(async function () {
 })
 
 $("#searchBtn1").click(async function (){
-    let video_link_1=`https://www.youtube.com/embed/${document.getElementById('video_id_1').value}`;
-    searching(video_link_1);
+    searching(document.getElementById('video_id_1').innerText);
 })
 
+$("#searchBtn2").click(async function (){
+    searching(document.getElementById('video_id_2').innerText);
+})
+$("#searchBtn3").click(async function (){
+    searching(document.getElementById('video_id_3').innerText);
+})
 // 댓글 저장 버튼 클릭 이벤트
 // 댓글 입력시 db에 저장 후 새로고침 필요
 $("#co_btn").click(async function () {
