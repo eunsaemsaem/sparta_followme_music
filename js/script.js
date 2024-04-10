@@ -72,12 +72,7 @@ fetch("https://raw.githubusercontent.com/KoreanThinker/billboard-json/main/billb
     })
 })
 
-// 검색 버튼 클릭 이벤트
-$("#searchBtn").click(async function () {
-    let searchStr = document.getElementById('search').value;
-    console.log(searchStr);
-    let videoId = searchStr.split("v=")[1].split("&")[0];
-    console.log(videoId);
+function searching(videoId){
     let iframe = document.getElementById('videoIframe');
     const embedUrl = `https://www.youtube.com/embed/${videoId}`;
     iframe.src = embedUrl;
@@ -104,6 +99,7 @@ $("#searchBtn").click(async function () {
                 $('#video_title_1').text(video_1_title);
                 let suggestion_image_1 = data['items'][0]['snippet']['thumbnails']['default']['url'];
                 document.getElementById('suggestionUrl_1').src = suggestion_image_1;
+                $('#video_id_1').text(suggestion_video_1);
             })
             let suggestion_video_2 = data['items'][3]['id']['videoId'];
             let suggestion_api_2 = `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&id=${suggestion_video_2}`
@@ -112,6 +108,7 @@ $("#searchBtn").click(async function () {
                 $('#video_title_2').text(video_2_title);
                 let suggestion_image_2 = data['items'][0]['snippet']['thumbnails']['default']['url'];
                 document.getElementById('suggestionUrl_2').src = suggestion_image_2;
+                $('#video_id_2').text(suggestion_video_1);
             })
         })
         let channelId = data['items'][0]['snippet']['channelId'];
@@ -127,6 +124,7 @@ $("#searchBtn").click(async function () {
                 $('#video_title_3').text(video_3_title);
                 let suggestion_image_3 = data['items'][0]['snippet']['thumbnails']['default']['url'];
                 document.getElementById('suggestionUrl_3').src = suggestion_image_3;
+                $('#video_id_3').text(suggestion_video_3);
             })
         })
 
@@ -138,6 +136,24 @@ $("#searchBtn").click(async function () {
         $('#video_like').text(likeCount);
         $('#video_views').text(views);
     })
+}
+// 검색 버튼 클릭 이벤트
+$("#searchBtn").click(async function () {
+    let searchStr = document.getElementById('search').value;
+    let videoId = searchStr.split("v=")[1].split("&")[0];
+    console.log(videoId);
+    searching(videoId);
+})
+
+$("#searchBtn1").click(async function (){
+    searching(document.getElementById('video_id_1').innerText);
+})
+
+$("#searchBtn2").click(async function (){
+    searching(document.getElementById('video_id_2').innerText);
+})
+$("#searchBtn3").click(async function (){
+    searching(document.getElementById('video_id_3').innerText);
 })
 
 // 댓글 저장 버튼 클릭 이벤트
