@@ -110,7 +110,7 @@ function searching(videoId) {
                 $('#video_title_2').text(video_2_title);
                 let suggestion_image_2 = data['items'][0]['snippet']['thumbnails']['default']['url'];
                 document.getElementById('suggestionUrl_2').src = suggestion_image_2;
-                $('#video_id_2').text(suggestion_video_1);
+                $('#video_id_2').text(suggestion_video_2);
             })
         })
         let channelId = data['items'][0]['snippet']['channelId'];
