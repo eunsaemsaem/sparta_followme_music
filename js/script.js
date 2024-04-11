@@ -3,7 +3,7 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebas
 import { collection, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 // import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 // 쿠키 관련 모듈 호출
 import { setSession, getSession, deleteSession } from "./session.js";
 
@@ -111,6 +111,7 @@ $("#searchBtn").click(async function () {
                 $('#video_title_1').text(video_1_title);
                 let suggestion_image_1 = data['items'][0]['snippet']['thumbnails']['default']['url'];
                 document.getElementById('suggestionUrl_1').src = suggestion_image_1;
+                $('#video_id_1').text(suggestion_video_1);
             })
             let suggestion_video_2 = data['items'][3]['id']['videoId'];
             let suggestion_api_2 = `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&id=${suggestion_video_2}`
@@ -119,6 +120,7 @@ $("#searchBtn").click(async function () {
                 $('#video_title_2').text(video_2_title);
                 let suggestion_image_2 = data['items'][0]['snippet']['thumbnails']['default']['url'];
                 document.getElementById('suggestionUrl_2').src = suggestion_image_2;
+                $('#video_id_2').text(suggestion_video_1);
             })
         })
         let channelId = data['items'][0]['snippet']['channelId'];
@@ -134,6 +136,7 @@ $("#searchBtn").click(async function () {
                 $('#video_title_3').text(video_3_title);
                 let suggestion_image_3 = data['items'][0]['snippet']['thumbnails']['default']['url'];
                 document.getElementById('suggestionUrl_3').src = suggestion_image_3;
+                $('#video_id_3').text(suggestion_video_3);
             })
         })
 
@@ -167,6 +170,28 @@ let videoLinkID = '0000';
 loginIdCommentSet();
 
 // 댓글저장 버튼 클릭 이벤트
+}
+// 검색 버튼 클릭 이벤트
+$("#searchBtn").click(async function () {
+    let searchStr = document.getElementById('search').value;
+    let videoId = searchStr.split("v=")[1].split("&")[0];
+    console.log(videoId);
+    searching(videoId);
+})
+
+$("#searchBtn1").click(async function () {
+    searching(document.getElementById('video_id_1').innerText);
+})
+
+$("#searchBtn2").click(async function () {
+    searching(document.getElementById('video_id_2').innerText);
+})
+$("#searchBtn3").click(async function () {
+    searching(document.getElementById('video_id_3').innerText);
+})
+
+// 댓글 저장 버튼 클릭 이벤트
+// 댓글 입력시 db에 저장 후 새로고침 필요
 $("#co_btn").click(async function () {
 
     let writer = $("#co_writer_input").val();
@@ -265,9 +290,6 @@ $("#signBtn").click(e => {
 
 })
 
-
-
-
 // TODO 브라우저 쿠키에 로그인 정보 저장 기능 구현
 // 로그인
 const signin_form_btn = document.getElementById("signin_form_btn");
@@ -305,4 +327,33 @@ signout_btn.addEventListener("click", () => {
     deleteSession();
     loginCheck();
     loginIdCommentSet();
+})
+const modal = document.querySelector('.modal');
+const modalOpen = document.querySelector('.modal_btn');
+const modalcls = document.getElementById('clsbtn');
+
+
+//열기 버튼을 눌렀을 때 모달팝업이 열림
+modalOpen.addEventListener('click', function () {
+    //'on' class 추가
+    modal.classList.add('on');
+});
+modalcls.addEventListener('click', function () {
+    modal.classList.remove('on');
+});
+const reset = document.getElementById("reset").addEventListener('click', (event) => {
+    event.preventDefault()
+    const email = document.getElementById('resetpwd').value
+    sendPasswordResetEmail(auth, email)
+        .then(() => {
+            window.alert("메일 보냄")
+            modal.classList.remove('on');
+            // ..
+        })
+        .catch((error) => {
+            console.log('이메일입력')
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // ..
+        });
 })
