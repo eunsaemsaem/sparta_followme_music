@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-import { collection, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-import { getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { collection, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { getDocs, query } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 // import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 // 쿠키 관련 모듈 호출
@@ -79,11 +79,7 @@ fetch("https://raw.githubusercontent.com/KoreanThinker/billboard-json/main/billb
 })
 
 // 검색 버튼 클릭 이벤트
-$("#searchBtn").click(async function () {
-    let searchStr = document.getElementById('search').value;
-    console.log(searchStr);
-    let videoId = searchStr.split("v=")[1].split("&")[0];
-    console.log(videoId);
+async function searching(videoId) {
     videoLinkID = videoId;
     let iframe = document.getElementById('videoIframe');
     const embedUrl = `https://www.youtube.com/embed/${videoId}`;
@@ -152,6 +148,13 @@ $("#searchBtn").click(async function () {
     const q = query(collection(db, "comments", videoLinkID, "data"));
     const docs = await getDocs(q);
     initComment(docs);
+}
+$("#searchBtn").click(async function () {
+    let searchStr = document.getElementById('search').value;
+    console.log(searchStr);
+    let videoId = searchStr.split("v=")[1].split("&")[0];
+    console.log(videoId);
+
 });
 
 // 로그인시 ID 댓글창에 띄우기 (일단 이메일)
@@ -169,7 +172,7 @@ const loginIdCommentSet = () => {
 let videoLinkID = '0000';
 loginIdCommentSet();
 
-// 댓글저장 버튼 클릭 이벤트
+// 댓글저장 버튼 클릭 이벤트햣
 // 검색 버튼 클릭 이벤트
 $("#searchBtn").click(async function () {
     let searchStr = document.getElementById('search').value;
