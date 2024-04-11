@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-import { collection, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-import { getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { collection, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { getDocs, query } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 // import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 // 쿠키 관련 모듈 호출
@@ -78,30 +78,20 @@ fetch("https://raw.githubusercontent.com/KoreanThinker/billboard-json/main/billb
     })
 })
 
-// 검색 버튼 클릭 이벤트
-$("#searchBtn").click(async function () {
-    let searchStr = document.getElementById('search').value;
-    console.log(searchStr);
-    let videoId = searchStr.split("v=")[1].split("&")[0];
-    console.log(videoId);
-    videoLinkID = videoId;
+function searching(videoId) {
     let iframe = document.getElementById('videoIframe');
     const embedUrl = `https://www.youtube.com/embed/${videoId}`;
     iframe.src = embedUrl;
-
     let url_snippet = `https://www.googleapis.com/youtube/v3/videos?part=snippet&key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&id=${videoId}`;
     let url_stat = `https://www.googleapis.com/youtube/v3/videos?part=statistics&key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&id=${videoId}`;
-
     fetch(url_snippet).then(res => res.json()).then(data => {
         let title = data['items'][0]['snippet']['title'];
         let description = data['items'][0]['snippet']['description'];
         let channelName = data['items'][0]['snippet']['channelTitle'];
-
         $('#title').text(title);
         $('#video_description').text(description);
         $('#channelName').text(channelName);
         let title_nospace = title.replace(/(\s*)/g, "");
-
         let suggestion_api = `https://www.googleapis.com/youtube/v3/search?key=AIzaSyAIyGyJLimC1Oo9r8_bNWQBVwsLndCsDLk&q=${title_nospace}`;
         fetch(suggestion_api).then(res => res.json()).then(data => {
             let suggestion_video_1 = data['items'][2]['id']['videoId'];
@@ -144,16 +134,10 @@ $("#searchBtn").click(async function () {
     fetch(url_stat).then(res => res.json()).then(data => {
         let likeCount = data['items'][0]['statistics']['likeCount'];
         let views = data['items'][0]['statistics']['viewCount'];
-
         $('#video_like').text(likeCount);
         $('#video_views').text(views);
     })
-    // 검색시 댓글창 초기화
-    const q = query(collection(db, "comments", videoLinkID, "data"));
-    const docs = await getDocs(q);
-    initComment(docs);
-});
-
+}
 // 로그인시 ID 댓글창에 띄우기 (일단 이메일)
 const loginIdCommentSet = () => {
     console.log(getSession('email'));
@@ -165,8 +149,6 @@ const loginIdCommentSet = () => {
         $("#co_writer_input").val('Anonymous');
     }
 }
-
-let videoLinkID = '0000';
 loginIdCommentSet();
 
 // 댓글저장 버튼 클릭 이벤트
@@ -176,6 +158,11 @@ $("#searchBtn").click(async function () {
     let videoId = searchStr.split("v=")[1].split("&")[0];
     console.log(videoId);
     searching(videoId);
+
+    // 검색시 댓글창 초기화
+    const q = query(collection(db, "comments", videoId, "data"));
+    const docs = await getDocs(q);
+    initComment(docs);
 })
 
 $("#searchBtn1").click(async function () {
