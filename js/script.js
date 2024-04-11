@@ -339,6 +339,7 @@ const modalcls = document.getElementById('clsbtn');
 modalOpen.addEventListener('click', function () {
     //'on' class 추가
     modal.classList.add('on');
+    $("#loginbtn").modal("hide");
 });
 modalcls.addEventListener('click', function () {
     modal.classList.remove('on');
