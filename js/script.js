@@ -170,7 +170,6 @@ let videoLinkID = '0000';
 loginIdCommentSet();
 
 // 댓글저장 버튼 클릭 이벤트
-}
 // 검색 버튼 클릭 이벤트
 $("#searchBtn").click(async function () {
     let searchStr = document.getElementById('search').value;
