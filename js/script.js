@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-import { getDocs } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { collection, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 // import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 // 쿠키 관련 모듈 호출
@@ -35,6 +35,9 @@ const loginCheck = () => {
             top_btns[i].classList.add("hidden");
         }
         top_btns[top_btns.length - 1].classList.remove("hidden");
+        document.getElementById("co_star").disabled = false;
+        document.getElementById("co_input").disabled = false;
+        document.getElementById("co_btn").disabled = false;
     } else {
         // 로그인 상태가 아니라면 sign in, sign up 버튼 띄워줌
         // 로그인 되었을 때 sign in, sign up 버튼 삭제
@@ -42,6 +45,9 @@ const loginCheck = () => {
             top_btns[i].classList.remove("hidden");
         }
         top_btns[top_btns.length - 1].classList.add("hidden");
+        document.getElementById("co_star").disabled = true;
+        document.getElementById("co_input").disabled = true;
+        document.getElementById("co_btn").disabled = true;
     }
 }
 
@@ -140,9 +146,10 @@ $("#searchBtn").click(async function () {
         $('#video_views').text(views);
     })
     // 검색시 댓글창 초기화
-    let docs = await getDocs(collection(db, "test"));
+    const q = query(collection(db, "comments", videoLinkID, "data"));
+    const docs = await getDocs(q);
     initComment(docs);
-})
+});
 
 // 로그인시 ID 댓글창에 띄우기 (일단 이메일)
 const loginIdCommentSet = () => {
@@ -166,14 +173,14 @@ $("#co_btn").click(async function () {
     let star = $("#co_star").val();
     let comment = $("#co_input").val();
     comment = comment.replaceAll('\n', '<br>');
-    let doc = {
+    let data = {
         'id': videoLinkID,
         'writer': writer,
         'star': star,
         'comment': comment
     };
     addComment(writer, star, comment);
-    await addDoc(collection(db, "test"), doc);
+    await setDoc(doc(collection(db, "comments", videoLinkID, "data"), getSession("email")), data);
     // 저장후 초기화
     //$("#co_writer_input").val("");
     $("#co_star").val("별점선택");
@@ -225,10 +232,10 @@ async function initComment(docs) {
         let writer = row['writer'];
         let star = row['star'];
         let comment = row['comment'];
-        let id = row['id'];
-        if (id == videoLinkID) {
-            addComment(writer, star, comment);
-        }
+        // let id = row['id'];
+        // if (id == videoLinkID) {
+        // }
+        addComment(writer, star, comment);
     });
 }
 
