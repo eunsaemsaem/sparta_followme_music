@@ -248,9 +248,6 @@ $("#signBtn").click(e => {
 
 })
 
-
-
-
 // TODO 브라우저 쿠키에 로그인 정보 저장 기능 구현
 // 로그인
 const signin_form_btn = document.getElementById("signin_form_btn");
@@ -291,16 +288,17 @@ const modal = document.querySelector('.modal');
 const modalOpen = document.querySelector('.modal_btn');
 
 //열기 버튼을 눌렀을 때 모달팝업이 열림
-modalOpen.addEventListener('click', function () {
-    //'on' class 추가
+modalOpen.addEventListener('click',function(){
+  	//'on' class 추가
     modal.classList.add('on');
 });
 const reset = document.getElementById("reset").addEventListener('click', (event) => {
     event.preventDefault()
-    const email = document.getElementById('signin_id').value
+    const email = document.getElementById('resetpwd').value
     sendPasswordResetEmail(auth, email)
         .then(() => {
             window.alert("메일 보냄")
+            modal.classList.remove('on');
             // ..
         })
         .catch((error) => {
