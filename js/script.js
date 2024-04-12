@@ -151,12 +151,15 @@ const loginIdCommentSet = () => {
 }
 loginIdCommentSet();
 
+let videoLinkID = '0000';
+
 // 댓글저장 버튼 클릭 이벤트
 // 검색 버튼 클릭 이벤트
 $("#searchBtn").click(async function () {
     let searchStr = document.getElementById('search').value;
     let videoId = searchStr.split("v=")[1].split("&")[0];
     console.log(videoId);
+    videoLinkID = videoId;
     searching(videoId);
 
     // 검색시 댓글창 초기화
